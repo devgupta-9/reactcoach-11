@@ -1,85 +1,16 @@
 "use client";
-
 import DecisionLab from "./decision-lab";
+import TacticalInsights from "./tactical-insights";
+import { useState } from "react";
+import { timecode, type EventKind } from "./match-contracts";
+import { useMatchReplay } from "./use-match-replay";
 
-import { useEffect, useState } from "react";
-
-type Team = "home" | "away";
-type EventKind = "kick_off" | "pass" | "shot" | "goal" | "tackle" | "turnover" | "full_time";
-type MatchEvent = {
-  id: number;
-  timestamp_seconds: number;
-  team: Team;
-  kind: EventKind;
-  player: string;
-  position: { x: number; y: number };
-};
-type MatchStatistics = {
-  home_passes: number;
-  away_passes: number;
-  home_shots: number;
-  away_shots: number;
-  home_actions: number;
-  away_actions: number;
-  home_action_share_pct: number;
-  away_action_share_pct: number;
-};
-type MatchSnapshot = {
-  match_id: string;
-  elapsed_seconds: number;
-  score: { home: number; away: number };
-  statistics: MatchStatistics;
-  events_processed: number;
-  latest_event: MatchEvent | null;
-};
-
-const api = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
-function timecode(seconds: number) {
-  return `${Math.floor(seconds / 60).toString().padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
-}
-function label(kind: EventKind) {
-  return kind.replaceAll("_", " ");
-}
+function label(kind: EventKind) { return kind.replaceAll("_", " "); }
 
 export default function HomePage() {
-  const [snapshot, setSnapshot] = useState<MatchSnapshot | null>(null);
-  const [events, setEvents] = useState<MatchEvent[]>([]);
-  const [status, setStatus] = useState("connecting");
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let active = true;
-    let latestRequest = 0;
-    async function refresh(at: number) {
-      const request = ++latestRequest;
-      try {
-        const response = await fetch(`${api}/api/v1/matches/demo/snapshot?at=${at}`, { cache: "no-store" });
-        if (!response.ok) throw new Error(`Snapshot HTTP ${response.status}`);
-        const data = (await response.json()) as MatchSnapshot;
-        if (active && request === latestRequest) { setSnapshot(data); setError(null); }
-      } catch (cause) {
-        if (active && request === latestRequest) setError(cause instanceof Error ? cause.message : "API unavailable");
-      }
-    }
-    void refresh(0);
-    const source = new EventSource(`${api}/api/v1/matches/demo/stream`);
-    source.addEventListener("open", () => { if (active) setStatus("live replay"); });
-    source.addEventListener("match-event", (raw) => {
-      const event = JSON.parse((raw as MessageEvent).data) as MatchEvent;
-      if (!active) return;
-      setEvents((previous) => previous.some((item) => item.id === event.id) ? previous : [...previous, event]);
-      void refresh(event.timestamp_seconds);
-    });
-    source.addEventListener("replay-complete", () => {
-      if (active) setStatus("replay complete");
-      source.close();
-    });
-    source.onerror = () => {
-      if (active && source.readyState !== EventSource.CLOSED) setStatus("reconnecting");
-    };
-    return () => { active = false; source.close(); };
-  }, []);
-
+  const [replay, setReplay] = useState({ at: 0, generation: 0 });
+  const [seek, setSeek] = useState(0);
+  const { snapshot, events, insights, status, error } = useMatchReplay(replay);
   const stats = snapshot?.statistics;
   const latest = snapshot?.latest_event;
   return (
@@ -103,7 +34,14 @@ export default function HomePage() {
         <div className="team away"><small>AWAY / DEMO</small><strong>South United</strong></div>
       </section>
 
-      {error && <div className="error" role="alert">Rust API connection: {error}. Start the API on port 8080 and reload.</div>}
+      <div className="replay-controls" aria-label="Replay controls">
+        <button type="button" onClick={() => { setSeek(0); setReplay(previous => ({ at: 0, generation: previous.generation + 1 })); }}>Restart replay</button>
+        <label>Start at second <input type="number" min="0" max="420" step="1" value={seek} onChange={event => setSeek(Number(event.target.value))} /></label>
+        <button type="button" disabled={!Number.isInteger(seek) || seek < 0 || seek > 420} onClick={() => setReplay(previous => ({ at: seek, generation: previous.generation + 1 }))}>Seek replay</button>
+      </div>
+      {error && <div className="error" role="alert">Match replay: {error}.</div>}
+
+      <TacticalInsights key={replay.generation} insights={insights} />
 
       <section className="content-grid">
         <div className="panel pitch-panel">
@@ -130,7 +68,7 @@ export default function HomePage() {
       <section className="panel timeline-panel">
         <div className="panel-heading"><div><small>REPLAY STREAM</small><h2>Event timeline</h2></div><span className="pill">SSE / AXUM</span></div>
         <div className="timeline">
-          {[...events].reverse().map((event) => <div className="timeline-item" key={event.id}><time>{timecode(event.timestamp_seconds)}</time><span className={`event-type ${event.team}`}>{label(event.kind)}</span><strong>{event.player}</strong><span>{event.team === "home" ? "North City" : "South United"}</span></div>)}
+          {[...events].reverse().map((event) => <div className="timeline-item" key={event.id} data-event-id={event.id}><time>{timecode(event.timestamp_seconds)}</time><span className={`event-type ${event.team}`}>{label(event.kind)}</span><strong>{event.player}</strong><span>{event.team === "home" ? "North City" : "South United"}</span></div>)}
           {events.length === 0 && <div className="timeline-empty">Waiting for the first synthetic event...</div>}
         </div>
       </section>

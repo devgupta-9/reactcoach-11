@@ -109,7 +109,7 @@ test("a late evaluation cannot overwrite a newly selected scenario", async ({ pa
   await expect(lab(page).locator(".rx-alternatives")).not.toContainText("Direct dribble");
 });
 
-test("replay completes with nine events and ignores a late older snapshot", async ({ page }, testInfo) => {
+test("replay completes with 23 events and ignores a late older snapshot", async ({ page }, testInfo) => {
   let release!: () => void;
   let finished!: () => void;
   const gate = new Promise<void>((resolve) => { release = resolve; });
@@ -121,16 +121,16 @@ test("replay completes with nine events and ignores a late older snapshot", asyn
     finished();
   });
   await page.goto("/");
-  await expect(page.locator(".score-center small")).toContainText("REPLAY COMPLETE", { timeout: 20_000 });
+  await expect(page.locator(".score-center small")).toContainText("REPLAY COMPLETE", { timeout: 35_000 });
   await expect(page.locator(".score")).toHaveText("1 : 0");
-  await expect(page.locator(".timeline-item")).toHaveCount(9);
-  await expect(page.locator(".pitch-dot")).toHaveCount(9);
+  await expect(page.locator(".timeline-item")).toHaveCount(23);
+  await expect(page.locator(".pitch-dot")).toHaveCount(23);
   release();
   await fulfilled;
   await page.waitForLoadState("networkidle");
   await expect(page.locator(".score-center small")).toContainText("07:00");
   await expect(page.locator(".score")).toHaveText("1 : 0");
-  await expect(page.locator(".statrow").last().locator("strong")).toHaveText("9");
+  await expect(page.locator(".statrow").last().locator("strong")).toHaveText("23");
   await page.screenshot({ path: testInfo.outputPath("replay.png"), fullPage: true });
 });
 
