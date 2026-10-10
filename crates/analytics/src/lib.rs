@@ -45,6 +45,8 @@ mod tests {
             kind: EventKind::Goal,
             player: "Forward".into(),
             position: PitchPosition { x: 90.0, y: 50.0 },
+            match_id: None,
+            context: None,
         };
         let result = summarize(&[event]);
         assert_eq!(result.home_shots, 1);

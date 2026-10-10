@@ -18,6 +18,47 @@ pub enum EventKind {
     Tackle,
     Turnover,
     FullTime,
+    Carry,
+    Pressure,
+    Interception,
+}
+
+/// Optional authored evidence, never inferred from sparse event positions.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct EventContext {
+    pub schema_version: String,
+    pub evidence: EventEvidence,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum EventEvidence {
+    CompletedPass {
+        receiver: String,
+    },
+    Carry {
+        direction: CarryDirection,
+    },
+    Pressure {
+        ball_carrier: String,
+        possession_event_id: u64,
+    },
+    Recovery {
+        dispossessed_player: String,
+        possession_event_id: u64,
+    },
+    LostPossession {
+        opponent_event_id: u64,
+    },
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CarryDirection {
+    Forward,
+    WideRight,
+    WideLeft,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -34,6 +75,10 @@ pub struct MatchEvent {
     pub kind: EventKind,
     pub player: String,
     pub position: PitchPosition,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub match_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub context: Option<EventContext>,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]

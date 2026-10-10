@@ -1,15 +1,14 @@
-use std::{convert::Infallible, time::Duration};
+use std::sync::Arc;
 
+mod intelligence;
 mod simulations;
 
 use axum::{
     extract::{DefaultBodyLimit, Query},
     http::{header, HeaderValue, Method, StatusCode},
-    response::sse::{Event, KeepAlive, Sse},
     routing::{get, post},
     Json, Router,
 };
-use futures_util::{stream, Stream};
 use reactcoach_decision_engine::{
     evaluate, evaluate_demo,
     offside::{assess_position, OffsideAssessment, OffsideFrame},
@@ -61,28 +60,6 @@ async fn snapshot(
                 "demo data validation failed",
             )
         })
-}
-
-async fn event_stream() -> Sse<impl Stream<Item = Result<Event, Infallible>>> {
-    let events = demo_events();
-    let stream = stream::unfold((0usize, events), |(index, events)| async move {
-        if index > events.len() {
-            return None;
-        }
-        if index > 0 {
-            tokio::time::sleep(Duration::from_millis(1_250)).await;
-        }
-        let payload = if index == events.len() {
-            Event::default().event("replay-complete").data("complete")
-        } else {
-            Event::default()
-                .event("match-event")
-                .json_data(&events[index])
-                .expect("static demo event is serializable")
-        };
-        Some((Ok(payload), (index + 1, events)))
-    });
-    Sse::new(stream).keep_alive(KeepAlive::default())
 }
 
 #[derive(Deserialize)]
@@ -148,7 +125,7 @@ async fn custom_evaluation(
         .map_err(|_| (StatusCode::BAD_REQUEST, "invalid synthetic player ratings"))
 }
 
-fn app() -> Router {
+fn app_with_replay(replay: Arc<intelligence::DemoReplay>) -> Router {
     let origin = std::env::var("WEB_ORIGIN").unwrap_or_else(|_| "http://localhost:3000".into());
     let origin: HeaderValue = origin
         .parse()
@@ -160,16 +137,21 @@ fn app() -> Router {
 
     Router::new()
         .merge(simulations::router())
+        .merge(intelligence::router(replay))
         .route("/api/v1/health", get(health))
         .route("/api/v1/matches/demo/events", get(events))
         .route("/api/v1/matches/demo/snapshot", get(snapshot))
-        .route("/api/v1/matches/demo/stream", get(event_stream))
         .route("/api/v1/decision-lab/demo", get(decision_demo))
         .route("/api/v1/decision-lab/evaluate", post(custom_evaluation))
         .route("/api/v1/offside/demo", get(offside_demo))
         .layer(DefaultBodyLimit::max(16 * 1024))
         .layer(cors)
         .layer(TraceLayer::new_for_http())
+}
+
+#[cfg(test)]
+fn app() -> Router {
+    app_with_replay(Arc::new(intelligence::DemoReplay::build().unwrap()))
 }
 
 #[tokio::main]
@@ -183,11 +165,17 @@ async fn main() {
         .ok()
         .and_then(|p| p.parse::<u16>().ok())
         .unwrap_or(8080);
+    let replay = tokio::task::spawn_blocking(intelligence::DemoReplay::build)
+        .await
+        .expect("materialization worker")
+        .expect("valid fictional scenario registry");
     let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
         .await
         .expect("bind API port");
     tracing::info!(port, "ReactCoach 11 API listening");
-    axum::serve(listener, app()).await.expect("serve HTTP");
+    axum::serve(listener, app_with_replay(Arc::new(replay)))
+        .await
+        .expect("serve HTTP");
 }
 
 #[cfg(test)]
@@ -330,6 +318,6 @@ mod tests {
         let bytes = to_bytes(response.into_body(), 1024 * 1024).await.unwrap();
         let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
         assert_eq!(json["score"]["home"], 1);
-        assert_eq!(json["events_processed"], 9);
+        assert_eq!(json["events_processed"], 23);
     }
 }

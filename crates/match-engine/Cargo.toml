@@ -9,3 +9,8 @@ license.workspace = true
 reactcoach-shared = { path = "../shared" }
 reactcoach-analytics = { path = "../analytics" }
 thiserror.workspace = true
+reactcoach-decision-engine = { path = "../decision-engine" }
+serde.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

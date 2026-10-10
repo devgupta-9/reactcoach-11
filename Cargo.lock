@@ -364,7 +364,10 @@ name = "reactcoach-match-engine"
 version = "0.1.0"
 dependencies = [
  "reactcoach-analytics",
+ "reactcoach-decision-engine",
  "reactcoach-shared",
+ "serde",
+ "serde_json",
  "thiserror",
 ]
 
