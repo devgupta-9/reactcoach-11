@@ -231,6 +231,9 @@ fn validate_fixture(
     events: &[MatchEvent],
 ) -> Result<(), IntelligenceError> {
     let invalid = |reason| IntelligenceError::Fixture(reason);
+    if f.attacking_team != Team::Home {
+        return Err(invalid("only Home attacking spatial fixtures are supported; Away would require explicit coordinate normalization"));
+    }
     if f.schema_version != FIXTURE_VERSION || f.request.scenario_version != SCENARIO_VERSION {
         return Err(invalid("unsupported version"));
     }

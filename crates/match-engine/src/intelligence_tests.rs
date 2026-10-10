@@ -320,6 +320,35 @@ fn pressure_can_reference_an_explicit_completed_pass_receipt() {
 }
 
 #[test]
+fn away_event_evidence_cannot_be_simulated_in_the_wrong_attack_direction() {
+    let original = demo_events();
+    let mut events = vec![
+        original[5].clone(),
+        original[7].clone(),
+        original[8].clone(),
+    ];
+    events[0].team = Team::Away;
+    events[0].player = "Away 10".into();
+    events[1].team = Team::Home;
+    events[1].player = "Home 5".into();
+    events[1].context.as_mut().unwrap().evidence = EventEvidence::Recovery {
+        dispossessed_player: "Away 10".into(),
+        possession_event_id: 6,
+    };
+    events[2].team = Team::Away;
+    events[2].player = "Away 10".into();
+    assert_eq!(detect_moments(DEMO_MATCH_ID, &events).unwrap().len(), 1);
+    let mut f = demo_fixtures()[0].clone();
+    f.attacking_team = Team::Away;
+    f.request.assessed_player.id = "Away 10".into();
+    f.request.opponent.id = "Home 5".into();
+    f.request.supporting_teammate.as_mut().unwrap().id = "Away 9".into();
+    assert!(
+        matches!(materialize(DEMO_MATCH_ID,&events,&[f]),Err(IntelligenceError::Fixture(reason)) if reason.contains("coordinate normalization"))
+    );
+}
+
+#[test]
 fn legacy_json_and_unknown_event_kind_compatibility() {
     let legacy = serde_json::json!({"id":1,"timestamp_seconds":0,"team":"home","kind":"kick_off","player":"Example","position":{"x":50.0,"y":50.0}});
     let e: MatchEvent = serde_json::from_value(legacy.clone()).unwrap();
