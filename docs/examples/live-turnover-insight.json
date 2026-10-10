@@ -1,0 +1,147 @@
+{
+  "schema_version": "tactical_intelligence_v1",
+  "insight_id": "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001",
+  "match_id": "demo-match-001",
+  "moment_id": "demo-match-001:fictional_replay_v2:moment:9",
+  "source_event_ids": [
+    6,
+    8,
+    9
+  ],
+  "event_timestamp": 112,
+  "insight_kind": "attacking_turnover",
+  "headline": "Attacking possession lost: compare the linked alternatives",
+  "significance_reason": "A logged attacking advance was followed within five seconds by an opposing recovery and an explicit loss of possession.",
+  "observed_event_facts": [
+    {
+      "id": 6,
+      "timestamp_seconds": 110,
+      "team": "home",
+      "kind": "carry",
+      "player": "Home 7",
+      "position": {
+        "x": 42.857,
+        "y": 50.0
+      },
+      "match_id": "demo-match-001",
+      "context": {
+        "schema_version": "synthetic_event_context_v1",
+        "evidence": {
+          "kind": "carry",
+          "direction": "wide_right"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "timestamp_seconds": 112,
+      "team": "away",
+      "kind": "tackle",
+      "player": "Away 4",
+      "position": {
+        "x": 44.0,
+        "y": 52.0
+      },
+      "match_id": "demo-match-001",
+      "context": {
+        "schema_version": "synthetic_event_context_v1",
+        "evidence": {
+          "kind": "recovery",
+          "dispossessed_player": "Home 7",
+          "possession_event_id": 6
+        }
+      }
+    },
+    {
+      "id": 9,
+      "timestamp_seconds": 112,
+      "team": "home",
+      "kind": "turnover",
+      "player": "Home 7",
+      "position": {
+        "x": 44.0,
+        "y": 52.0
+      },
+      "match_id": "demo-match-001",
+      "context": {
+        "schema_version": "synthetic_event_context_v1",
+        "evidence": {
+          "kind": "lost_possession",
+          "opponent_event_id": 8
+        }
+      }
+    }
+  ],
+  "detected_statistics": {
+    "home_passes": 3,
+    "away_passes": 0,
+    "home_shots": 0,
+    "away_shots": 0,
+    "home_actions": 7,
+    "away_actions": 2,
+    "home_action_share_pct": 77.77778,
+    "away_action_share_pct": 22.222221
+  },
+  "synthetic_scenario_assumptions": [
+    "All identities and ratings are fictional; synthetic ratings are uncalibrated indices.",
+    "Home attacks along +x on the authored 105 x 68 metre pitch. Positions, velocities and ball ownership are authored, not recovered from tracking.",
+    "The carry record anchors this hypothetical starting location. The four-second rollout and 1200ms adaptation are model time, not a reconstruction of event time.",
+    "One attacker, one defender and one stationary supporting teammate; separate replay events are not forced to match simulation outcomes."
+  ],
+  "scenario_fixture_id": "turnover-wide-001",
+  "scenario_version": "open_play_spatial_v1",
+  "fixture_relation": "hypothetical_precursor",
+  "original_action": "wide_right",
+  "recommended_action": "release_pass",
+  "baseline_trace_id": "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline",
+  "corrected_trace_id": "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass",
+  "comparison_evidence": {
+    "baseline": {
+      "friendly_possession": false,
+      "bypassed_defender": false,
+      "forward_ball_progress_mm": 3028,
+      "defender_clearance_mm": 0,
+      "objective_key": [
+        false,
+        false,
+        0,
+        0
+      ]
+    },
+    "corrected": {
+      "friendly_possession": true,
+      "bypassed_defender": true,
+      "forward_ball_progress_mm": 12000,
+      "defender_clearance_mm": 11471,
+      "objective_key": [
+        true,
+        true,
+        12,
+        11
+      ]
+    },
+    "summary": "In the authored scenario, wide right ended without friendly possession; release pass ended with friendly possession and improved the modeled tactical objective. This does not guarantee a real match outcome.",
+    "reason": "release_pass improves the lexicographic objective from (false, false, 0, 0) to (true, true, 12, 11); inspect alternative:release_pass opponent-decision and movement events for the spatial evidence.",
+    "opponent_decision_event_ids": [
+      "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline:event:001",
+      "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass:event:001",
+      "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass:event:004"
+    ]
+  },
+  "limitations": [
+    "Fictional attributes and uncalibrated parameters; no probabilities, expected goals or claims about real athletes.",
+    "Two active players and a stationary optional receiver; no collisions, spin, aerial ball, stamina, fouls, goalkeeper, goals or full team tactics.",
+    "Interception checks the ball segment against the defender's end-of-tick position. Counter feasibility is a horizon screen, not proof of interception before ball arrival.",
+    "Passes aim at a fixed destination; one-two returns may become loose when the moving receiver cannot stop in time. In-flight or loose balls do not count as settled possession.",
+    "This spatial scenario performs no Law 11 offence assessment; the existing offside-position endpoint remains separate.",
+    "This counterfactual is an authored synthetic scenario, not recovered match tracking or a real success probability. A missing correction means no strictly better feasible branch was found."
+  ],
+  "provenance": {
+    "match_version": "fictional_replay_v2",
+    "fixture_version": "synthetic_scenario_fixture_v1",
+    "detector_version": "tactical_intelligence_v1",
+    "engine_version": "open_play_spatial_v1",
+    "fictional": true,
+    "geometry_authored": true
+  }
+}

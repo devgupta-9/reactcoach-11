@@ -15,12 +15,12 @@ Rust workspace:
   discrete opponent best-response arbitration, and separate offside-position geometry.
 - `crates/shared`: serializable event, statistics, snapshot contracts.
 - `crates/analytics`: counts discrete actions; explicitly avoids a misleading time-possession estimate.
-- `crates/match-engine`: validates coordinates/IDs and computes reproducible snapshots at any time.
+- `crates/match-engine`: validates records/context, computes reproducible snapshots, detects tactical moments and links authored fixtures to spatial evidence.
 - `crates/agents`: planned roles and handoff schema. **No real model calls implemented.**
 - `apps/api`: Axum REST/SSE API with tracing and origin-restricted CORS.
 - `apps/web`: Next.js presentation.
 
-The decision-coaching path is separate from synthetic match replay:
+The legacy decision-lab path remains independently available:
 
 ```text
 Editable synthetic assessed-player and opponent profiles + scenario
@@ -72,7 +72,7 @@ uncalibrated modeling conventions, not realistic biomechanics or success probabi
 
 1. All events are explicitly labeled synthetic, and no proprietary match feed is required.
 2. Raw event records are the source of truth; never ask an LLM to invent numeric match statistics.
-3. Evidence identifiers, confidence and distinct 'observed vs interpreted' fields belong in Phase 3.
+3. Phase 2B separates source observations, authored assumptions and simulation results with versioned evidence identifiers; Foundry narratives and validators remain Phase 3.
 4. Current action share is the proportion of logged actions and must not be described as possession.
 5. The demo replays a short fictional match sequence, not a live league fixture.
 
@@ -95,10 +95,40 @@ uncalibrated modeling conventions, not realistic biomechanics or success probabi
 | POST | /api/v1/simulations/open-play | bounded baseline and adaptive spatial traces |
 | GET | /api/v1/matches/demo/events | all demo events |
 | GET | /api/v1/matches/demo/snapshot?at=420 | deterministic snapshot at second |
-| GET | /api/v1/matches/demo/stream | replay SSE: match-event, replay-complete |
+| GET | /api/v1/matches/demo/insights?at=420 | timestamp-scoped tactical insight array |
+| GET | /api/v1/matches/demo/insights/{insight_id}?at=420 | source/fixture evidence and full spatial report |
+| GET | /api/v1/matches/demo/stream?after=112 | replay SSE: match-event, tactical-insight, replay-complete |
 
-The stream replays events about every 1.25 seconds. Reconnecting begins the demo stream again.
-The frontend closes the connection when the completion event arrives.
+The stream replays 23 fictional records about every 1.25 seconds. Insights follow
+their triggers without another simulation or delay. Reconnection can repeat stable
+transport IDs; the browser deduplicates before updating its clock. Seeking restores
+timestamp-scoped events/snapshot/insights and starts the stream strictly after that
+time. The client closes the connection on completion and cancels old replay/detail
+requests on navigation.
+
+## Phase 2B match-triggered tactical evidence
+
+```text
+Versioned fictional events and optional typed context
+    -> deterministic attacking-turnover / pressure detection + prefix statistics
+    -> validated registry: trigger -> authored scenario, not inferred tracking
+    -> unchanged decision-engine::simulation baseline and correction rollouts
+    -> typed observations + assumptions + comparison + provenance + trace references
+    -> once-per-startup blocking materialization, immutable bounded Arc catalog
+    -> additive insight list/detail + SSE after each triggering event
+    -> restrained Match Center cards, evidence details and replay/seek guards
+```
+
+`match-engine/fixtures.rs` owns authored records and context validation;
+`match-engine/intelligence.rs` owns detection, fixture validation and orchestration;
+`apps/api/src/intelligence.rs` materializes and serves bounded evidence. Two fixtures
+link event 9 at 112s and event 17 at 335s to a fictional Home 7 / Away 4 / Home 10
+world. The turnover fixture is a hypothetical precursor; the pressure fixture is an
+authored decision point. No simulation result is presented as observed tracking.
+
+See [Phase 2B contracts and limitations](LIVE_MATCH_INTELLIGENCE_CONTRACT.md).
+Future Foundry agents can consume the same detail/report identifiers; no model
+calls, persistence, extra infrastructure or simulation-engine rewrite are introduced.
 
 ## Security notes
 

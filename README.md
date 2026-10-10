@@ -20,6 +20,10 @@ The user starts with an assessed player, a specific opponent and a football situ
 - Rule-aware offside **position** check with a timing correction; not a complete offside offence or VAR decision.
 - Axum REST API and synthetic match replay over SSE.
 - Next.js interface for the decision lab and legacy synthetic match replay.
+- **Live synthetic tactical moments:** 23 fictional events trigger two typed insights,
+  linked to authored spatial scenarios with opponent counters, same-start corrections,
+  source evidence and explicit limitations. Match Center includes evidence inspection,
+  restart and timestamp seeking.
 - Automated format/lint/test/build CI.
 
 **Phase 2A:** a bounded deterministic spatial open-play simulator is available at
@@ -27,6 +31,11 @@ The user starts with an assessed player, a specific opponent and a football situ
 adaptations under identical starting conditions and records movement and counter
 evidence. See [the API contract](docs/SPATIAL_SIMULATION_CONTRACT.md) and
 [verification report](docs/PHASE_2A_VERIFICATION.md).
+
+**Phase 2B:** the replay is connected to the existing spatial engine. See
+[live match intelligence contracts](docs/LIVE_MATCH_INTELLIGENCE_CONTRACT.md).
+Authored scenario geometry is hypothetical and is never described as recovered
+tracking data. Recommendations remain nullable when no improvement is supported.
 
 **Not implemented:** real-player scouting data, continuous optimal opponent simulation, Microsoft Foundry model calls, realistic ball physics, calibrated outcome predictions or Azure deployment.
 
@@ -68,6 +77,7 @@ curl 'http://localhost:8080/api/v1/decision-lab/demo?scenario=open_play'
 curl 'http://localhost:8080/api/v1/decision-lab/demo?scenario=penalty'
 curl 'http://localhost:8080/api/v1/decision-lab/demo?scenario=free_kick'
 curl http://localhost:8080/api/v1/offside/demo
+curl 'http://localhost:8080/api/v1/matches/demo/insights?at=112'
 curl -N http://localhost:8080/api/v1/matches/demo/stream
 ```
 
@@ -100,7 +110,7 @@ See [Phase 1 verification and prioritized plan](docs/PHASE_1_VERIFICATION.md).
 ## Architecture / scope
 
 - `crates/decision-engine`: matchup model, synthetic ratings, scenario comparisons and offside position.
-- `crates/match-engine`: synthetic match replay.
+- `crates/match-engine`: synthetic replay, typed moment detection and event-to-spatial evidence.
 - `crates/analytics`: deterministic match statistics.
 - `crates/shared`: existing match event wire types.
 - `crates/agents`: future roles (no deployed AI workflows).

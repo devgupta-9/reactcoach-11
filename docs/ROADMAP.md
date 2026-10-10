@@ -18,7 +18,7 @@ The coaching simulator is a differentiator *inside* the match-intelligence pipel
 | --- | --- | --- | --- |
 | 1. Foundation | Completed | **DONE** | Phase 1 PR #1 merged; Rust/API/Next.js/replay/CI baseline |
 | 2A. Spatial simulation | Completed | **DONE** | Phase 2A PR #2 merged; 61 Rust tests and 14 browser checks reported; post-merge main CI green |
-| **2B. Live synthetic match intelligence** | **Oct 10–13** | **PENDING — NEXT** | Two meaningful events with replay-stable typed insight evidence and authored spatial fixtures |
+| **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE locally** | 81 Rust / 24 browser tests pass; final Agy review blocked; owner acceptance and publication pending |
 | 3. Microsoft Foundry intelligence | Oct 13–17 | PENDING | Real inference; versioned grounded narratives; evidence validator; outage fallback |
 | 4. Broadcast & audience experience | Oct 17–21 | PENDING | Synchronized overlays, real trace playback, two audience views, recap, mobile |
 | 5. Azure deployment & QA | Oct 21–24 | PENDING | Public HTTPS demo; approved cost/credentials; CI/E2E/security/observability |
@@ -28,13 +28,18 @@ The dates overlap deliberately to allow early Cloud/Foundry access checks and in
 
 ## Proper Task 2B — Immediate backlog
 
-- [ ] **2B.1** Expand the existing fictional event replay into coherent match moments while preserving established contracts.
-- [ ] **2B.2** Detect at least two significant moments from factual synthetic event records with deterministic criteria.
-- [ ] **2B.3** Attach openly authored and versioned spatial states to selected match-event IDs; never claim full player tracking was inferred from sparse events.
-- [ ] **2B.4** Emit typed evidence: match ID, event ID/time, stats, authored scenario ID/version, comparison trace IDs, outcome, provenance and limitations.
-- [ ] **2B.5** Connect evidence to the match stream and replay/seek lifecycle without stale results or duplicate insights.
-- [ ] **2B.6** Add deterministic fixture, API and replay regression coverage.
-- [ ] **2B gate:** Two match events independently produce stable evidence-backed spatial comparisons. Existing Rust, web and browser tests pass.
+- [x] **2B.1** Expand the existing fictional event replay into coherent match moments while preserving established contracts (23 records).
+- [x] **2B.2** Detect at least two significant moments from factual synthetic event records with deterministic criteria (events 9 and 17).
+- [x] **2B.3** Attach openly authored and versioned spatial states to selected match-event IDs; never claim full player tracking was inferred from sparse events.
+- [x] **2B.4** Emit typed evidence: match ID, event ID/time, stats, authored scenario ID/version, comparison trace IDs, outcome, provenance and limitations.
+- [x] **2B.5** Connect evidence to the match stream and replay/seek lifecycle without stale results or duplicate insights.
+- [x] **2B.6** Add deterministic fixture, API and replay regression coverage (81 Rust and 24 desktop/mobile browser tests).
+- [x] **2B gate:** Two match events independently produce stable evidence-backed spatial comparisons. Existing Rust, web and browser tests pass locally.
+
+Final independent Agy review is **Blocked**: required headless permission followed
+by a file-only retry timeout. Architecture review succeeded; final independent
+approval was not obtained. Owner acceptance and GitHub publication remain **Pending**.
+Do not advance to Phase 3 before owner approval. See [Phase 2B verification](PHASE_2B_VERIFICATION.md).
 
 **Suggested branch:** `feat/phase-2b-live-match-intelligence`. Start from verified `main`, keep changes on a feature branch and review by PR before merge.
 
@@ -43,12 +48,12 @@ The dates overlap deliberately to allow early Cloud/Foundry access checks and in
 - [ ] Verify Microsoft Foundry account, deployment regions, available models, costs and quotas.
 - [ ] Obtain explicit owner approval *before* provisioning paid Azure resources.
 - [ ] Prepare mock and real-model evidence-validation test plans without exposing browser credentials.
-- [ ] Choose two end-to-end demo scenarios and evidence fixtures early.
+- [x] Choose two end-to-end demo scenarios and evidence fixtures early (turnover and pressure).
 - [ ] Have Agy prepare interface review after backend event/insight contracts are stable, without overlapping file edits.
 
 ## Submission readiness
 
-- [ ] Match-triggered synthetic tactical intelligence, at least two moments
+- [x] Match-triggered synthetic tactical intelligence, at least two moments (locally verified)
 - [ ] Evidence-backed original versus corrected spatial replay
 - [ ] Genuine verified Foundry explanation and deterministic fallback
 - [ ] Fan and Analyst modes grounded in identical facts
@@ -67,5 +72,7 @@ The dates overlap deliberately to allow early Cloud/Foundry access checks and in
 - [Phase 1 verification](PHASE_1_VERIFICATION.md)
 - [Phase 2A verification](PHASE_2A_VERIFICATION.md)
 - [Spatial simulation contract](SPATIAL_SIMULATION_CONTRACT.md)
+- [Live match intelligence contract](LIVE_MATCH_INTELLIGENCE_CONTRACT.md)
+- [Phase 2B local verification and limitations](PHASE_2B_VERIFICATION.md)
 
 This roadmap supersedes the preapproval coaching-only sequence. The detailed approved execution plan is the final scope authority for the hackathon.
