@@ -130,6 +130,28 @@ See [Phase 2B contracts and limitations](LIVE_MATCH_INTELLIGENCE_CONTRACT.md).
 Future Foundry agents can consume the same detail/report identifiers; no model
 calls, persistence, extra infrastructure or simulation-engine rewrite are introduced.
 
+## Interactive Tactical Studio (local UI slice)
+
+The frontend consumes the existing `InsightDetail` and full `SimulationReport`.
+`apps/web/app/simulation-contracts.ts` mirrors the versioned Rust spatial fields;
+`tactical-studio.tsx` owns scene loading and a reusable `TracePlayer`. No new API,
+simulation algorithm, dependency, model service or background worker is added.
+
+The standalone studio explicitly previews authored scenarios using `at=420`.
+It does not add future insights to the live replay. The Match Center still displays
+insights only after their triggering events and opens the same player from their
+linked evidence. Keyed scene loaders abort obsolete requests; branch changes reset
+the playback clock. The player reads positions, possession and tactical events from
+the chosen report trace and interpolates positions only for presentation between
+100ms snapshots. It neither changes Rust's states nor reranks alternatives.
+
+CSS perspective provides the angled pitch and raised role markers; SVG draws
+pitch lines and sampled paths. Both comparison branches share a camera frame.
+Reduced-motion users retain keyboard scrubbing, chapters and comparison with
+animation disabled. A separate, untransformed role selector handles crowded pitch
+markers. This is a spatial explanation view, not full athlete or ball physics.
+See [UI contracts and verification](TACTICAL_STUDIO_UI.md).
+
 ## Security notes
 
 - The API restricts CORS to `WEB_ORIGIN` (default localhost:3000). Configure it per deployment.

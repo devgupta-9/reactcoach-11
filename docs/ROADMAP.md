@@ -45,6 +45,13 @@ Do not advance to Phase 3 before owner approval. See [Phase 2B verification](PHA
 
 ## Cross-cutting setup to start alongside 2B
 
+**Owner direction, 2026-10-13:** prioritize the premium interactive UI before
+continuing Microsoft Foundry setup. An evidence-linked CSS 3D Tactical Studio is
+**Done locally** on `feat/interactive-tactical-ui`; 81 Rust tests and 38 browser
+checks pass. This is a slice of Phase 4, not completion of broadcast overlays,
+Fan/Analyst modes or recap. The approved target dates remain unchanged.
+See [Tactical Studio UI](TACTICAL_STUDIO_UI.md).
+
 - [ ] Verify Microsoft Foundry account, deployment regions, available models, costs and quotas.
 - [ ] Obtain explicit owner approval *before* provisioning paid Azure resources.
 - [ ] Prepare mock and real-model evidence-validation test plans without exposing browser credentials.
@@ -54,7 +61,7 @@ Do not advance to Phase 3 before owner approval. See [Phase 2B verification](PHA
 ## Submission readiness
 
 - [x] Match-triggered synthetic tactical intelligence, at least two moments (locally verified)
-- [ ] Evidence-backed original versus corrected spatial replay
+- [x] Evidence-backed original versus corrected spatial replay (local Tactical Studio)
 - [ ] Genuine verified Foundry explanation and deterministic fallback
 - [ ] Fan and Analyst modes grounded in identical facts
 - [ ] Broadcast-style overlay and match recap

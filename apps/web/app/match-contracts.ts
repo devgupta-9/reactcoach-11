@@ -16,6 +16,6 @@ export type TacticalInsight = {
   comparison_evidence: { baseline: TacticalEvaluation; corrected: TacticalEvaluation | null; summary: string; reason: string; opponent_decision_event_ids: string[] };
   limitations: string[];
 };
-export type InsightDetail = { insight: TacticalInsight; trace_namespace: string; simulation: { baseline: { id: string }; scenario_version: string } };
+export type InsightDetail = { insight: TacticalInsight; trace_namespace: string; simulation: import("./simulation-contracts").SimulationReport };
 export const matchApi = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 export function timecode(seconds: number) { return `${Math.floor(seconds / 60).toString().padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`; }

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { matchApi, timecode, type InsightDetail, type TacticalInsight } from "./match-contracts";
+import { TracePlayer } from "./tactical-studio";
 
 export default function TacticalInsights({ insights }: { insights: TacticalInsight[] }) {
   const [selected, setSelected] = useState<string | null>(null);
@@ -46,6 +47,7 @@ export default function TacticalInsights({ insights }: { insights: TacticalInsig
           <p>P is 1 for friendly possession, otherwise 0. B is 1 when friendly possession is at least one metre beyond the defender, otherwise 0. G is forward ball progress in millimetres; C is modeled defender clearance in millimetres. A correction requires a strictly greater Q, compared left to right; ties keep the original continuation.</p>
           <p>{detail.insight.comparison_evidence.reason}</p>
         </details>
+        <TracePlayer key={detail.insight.insight_id} detail={detail} />
         <a href={`${matchApi}/api/v1/matches/demo/insights/${encodeURIComponent(detail.insight.insight_id)}`} target="_blank" rel="noreferrer">Open full simulation evidence (JSON)</a>
       </>}
     </div>}

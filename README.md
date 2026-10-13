@@ -39,6 +39,16 @@ tracking data. Recommendations remain nullable when no improvement is supported.
 
 **Not implemented:** real-player scouting data, continuous optimal opponent simulation, Microsoft Foundry model calls, realistic ball physics, calibrated outcome predictions or Azure deployment.
 
+## Interactive Tactical Studio
+
+Explore the two authored tactical moments on an angled, CSS 3D pitch. Play/pause,
+scrub the recorded simulation, compare original and corrected decisions, inspect
+participants and switch between overhead, focused and whole-pitch views. Match
+insight evidence opens the same trace player. All motion comes from the existing
+Rust report, with interpolation only for display. The editable Decision Lab,
+penalties, free kicks, offside-position examples and match replay remain available.
+See [UI behavior and limitations](docs/TACTICAL_STUDIO_UI.md).
+
 ## Requirements
 
 Rust stable (>=1.85), with rustfmt and Clippy, Node.js 22+, npm.

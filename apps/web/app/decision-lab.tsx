@@ -180,7 +180,7 @@ export default function DecisionLab() {
           {pendingEdits && <p className="rx-footnote" role="status">Ratings changed. Recalculate to update the recommendation; displayed results use the last evaluated ratings.</p>}
           <div className="rx-section-title">Original decision vs. recommended correction</div>
           <div className="rx-comparison">
-            {original && <div className="rx-choice"><small>ORIGINAL ACTION</small><h3>{original.label}</h3><div className="rx-score">{original.decision_fit_index}<span>/100 fit index</span></div><ScoreBar score={original.decision_fit_index} muted /><p>{original.modeled_opponent_response}</p></div>}
+            {original && <div className="rx-choice"><small>ORIGINAL ACTION</small><h3>{original.label}</h3><div className="rx-score">{original.decision_fit_index}<span>/100 fit index</span></div><ScoreBar score={original.decision_fit_index} muted /><p><strong>Opponent response: </strong>{original.modeled_opponent_response}</p></div>}
             {best && <div className="rx-choice rx-choice-best"><small>HIGHEST-FIT OPTION</small><h3>{best.label}</h3><div className="rx-score">{best.decision_fit_index}<span>/100 fit index</span></div><ScoreBar score={best.decision_fit_index} /><p>{best.coaching_instruction}</p></div>}
           </div>
           <div className="rx-gain"><strong>{report.improvement_index_points > 0 ? "+" : ""}{report.improvement_index_points} fit-index points</strong><span>Model comparison, not probability of success</span></div>
