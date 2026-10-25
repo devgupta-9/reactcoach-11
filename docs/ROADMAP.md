@@ -18,10 +18,10 @@ The coaching simulator is a differentiator *inside* the match-intelligence pipel
 | --- | --- | --- | --- |
 | 1. Foundation | Completed | **DONE** | Phase 1 PR #1 merged; Rust/API/Next.js/replay/CI baseline |
 | 2A. Spatial simulation | Completed | **DONE** | Phase 2A PR #2 merged; 61 Rust tests and 14 browser checks reported; post-merge main CI green |
-| **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE locally** | 81 Rust / 24 browser tests pass; final Agy review blocked; owner acceptance and publication pending |
+| **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE; GitHub publication pending** | 81 Rust tests; 23 events / 2 moments verified on Azure; Agy review blocked; owner acceptance pending |
 | 3. Microsoft Foundry intelligence | Oct 13–17 | IN PROGRESS | One real inference smoke passed October 25; application narratives, validator and fallback remain pending |
-| 4. Broadcast & audience experience | Oct 17–21 | PENDING | Synchronized overlays, real trace playback, two audience views, recap, mobile |
-| 5. Azure deployment & QA | Oct 21–24 | IN PROGRESS | Docker/Bicep and guarded release prepared; public HTTPS endpoints and deployed E2E acceptance still required |
+| 4. Broadcast & audience experience | Oct 17–21 | IN PROGRESS | Tactical Studio deployed; Fan/Analyst views, broadcast overlay and recap remain pending |
+| 5. Azure deployment & QA | Oct 21–24 | IN PROGRESS | Public HTTPS demo and 40 hosted browser / 19 smoke checks pass; Foundry-integrated QA, release automation and retained monitoring remain pending |
 | 6. Demo & submission | Oct 24–26 | PENDING | Public repo/demo, sub-two-minute video, valid platform submission |
 
 The dates overlap deliberately to allow early Cloud/Foundry access checks and interface integration. They are internal targets, not delivery guarantees.
@@ -61,18 +61,21 @@ See [Tactical Studio UI](TACTICAL_STUDIO_UI.md).
 **Release increment, 2026-10-25:** `feat/azure-release-prep` preserves the local
 Phase 2B/UI history. Linux container packaging, a Consumption-only Azure topology,
 explicit subscription/tenant guards, deployed-browser test configuration and a
-Next.js security patch are prepared. Real Foundry HTTP 200/`READY` verifies model
+Next.js security patch are delivered. The public Azure demo passed 40 local and
+40 hosted browser checks plus 19 endpoint/SSE checks. The INR 300 monthly budget
+and owner-requested alerts are configured; they are not spending caps.
+Real Foundry HTTP 200/`READY` verifies model
 access only; the app's coaching agent workflow and full audience modes remain
 unfinished. See [release scope, costs and acceptance](AZURE_DEPLOYMENT.md).
 
 ## Submission readiness
 
 - [x] Match-triggered synthetic tactical intelligence, at least two moments (locally verified)
-- [x] Evidence-backed original versus corrected spatial replay (local Tactical Studio)
+- [x] Evidence-backed original versus corrected spatial replay (Tactical Studio verified on Azure)
 - [ ] Genuine verified Foundry explanation and deterministic fallback
 - [ ] Fan and Analyst modes grounded in identical facts
 - [ ] Broadcast-style overlay and match recap
-- [ ] Public tested Azure demo (desktop/mobile)
+- [x] Public tested Azure demo (40 desktop/mobile browser checks; 19 endpoint/SSE checks, October 25)
 - [ ] Public repo, demo video under two minutes, project description and platform submission
 
 ## Scope freeze and caveats

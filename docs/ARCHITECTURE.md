@@ -157,7 +157,7 @@ See [UI contracts and verification](TACTICAL_STUDIO_UI.md).
 - The API restricts CORS to `WEB_ORIGIN` (default localhost:3000). Configure it per deployment.
 - Never commit model/API credentials. `.env.example` contains placeholders only.
 - CORS is not an authentication boundary. All demo endpoints currently use public synthetic data.
-- This is a foundation prototype, not a deployed production sports feed.
+- The public demo serves fictional synthetic data, not a production sports feed.
 
 ## Azure release packaging
 

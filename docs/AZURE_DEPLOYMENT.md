@@ -9,11 +9,11 @@ were found in the billing profile when checked on October 24.
 
 | Stage | Evidence / acceptance gate |
 | --- | --- |
-| Deterministic engine, replay and Tactical Studio | Existing local implementation; retain all three decision scenarios, offside and both spatial moments |
+| Deterministic engine, replay and Tactical Studio | Verified locally and on Azure: all three decision scenarios, offside and both spatial moments retained |
 | Foundry resource and model access | Real Responses smoke test returned HTTP 200 and `READY` on October 25; 11 input / 19 output tokens; one request, no retry |
 | Foundry application integration | **Pending**: interpreter, challenger, narrator, factual validator, outage fallback and two real evidence-linked explanations |
 | Audience experience | **Pending**: distinct Fan/Analyst views, synchronized broadcast overlay and evidence-grounded recap; existing studio is only part of this phase |
-| Public Azure hosting | Deployment templates and release script prepared; acceptance requires successful Linux image builds, healthy public endpoints and deployed browser tests |
+| Public Azure hosting | **Done**: successful Linux builds, healthy HTTPS endpoints, 40 hosted browser checks and 19 endpoint/SSE checks |
 | Submission | **Pending**: review/publication of local branches, public repo/demo links, video under two minutes and owner submission; internal target October 26 |
 
 The official submission deadline is October 27, 11:59 PM Pacific, equivalent to
@@ -158,6 +158,63 @@ position. Native instant anchor jumps preserve the destination as content loads.
 The regression test holds the real studio response until navigation, then verifies
 that Decision Lab remains in view after the evidence expands the page. Tactical
 playback animation and camera controls are unchanged.
+
+## Hosted release record — 2026-10-25
+
+- Web: https://reactcoach-demo-web.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io
+- API: https://reactcoach-demo-api.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io
+- Resource group: `rg-reactcoach-demo`, East US 2, personal subscription.
+- API source: `d23a95ca85301cb643afac3eaab4cea1b09135f0`;
+  image `reactcoach/api:d23a95ca8530-20261025125949`;
+  digest `sha256:60d6ac43051d0810dd59f7bfbeaa917c63d875aa52b40c803eeae5c514c2dfa7`.
+- Web source: `73e314125be3aaf0295526510ad675ed808b793e`;
+  image `reactcoach/web:73e314125be3-20261025134717`;
+  digest `sha256:7bd2163a1c2c0b7febe47eb353922eeec13b1bf754d73bed284468aa9b4b7542`.
+- Registry: `rclgz67wzypxwhw.azurecr.io`. Cloud runs `ch1` (API), `ch2`
+  (initial web) and `ch3` (navigation correction) all finished `Succeeded`.
+- Both apps were verified with HTTPS ingress, HTTP disabled, 0.25 vCPU,
+  0.5 GiB memory, and 0 minimum / 1 maximum replica.
+- The existing subscription budget was updated from INR 10 to **INR 300/month**,
+  with enabled 50%, 80% and 100% alerts to the owner's requested address.
+  Billing currency was verified as INR. Delivery of a budget email was not tested.
+
+Final hosted verification: **40 Playwright desktop/mobile tests passed, 0 failed**;
+**19 public endpoint/SSE smoke checks passed, 0 failed**. The smoke checks cover
+HTTPS/security headers, all three decision scenarios, offside, 23 replay records,
+two source-linked insights and their details, time-scoped retrieval, repeated
+byte-identical simulation output, payload bounds, CORS, invalid time rejection,
+and source-event-before-insight SSE ordering. The ad hoc smoke script and receipts
+remain in ignored `.local/`; they are not a new GitHub CI job.
+
+The final local browser rerun also passed **40 tests, 0 failed**. Rust format,
+Clippy with warnings denied and **81 locked workspace tests** passed; Rust source
+and locked dependencies were unchanged throughout the release. Web lint,
+TypeScript checking and production build passed, and the refreshed production
+npm audit found **0 vulnerabilities**. Earlier 38-test local results above are
+the preserved pre-navigation-regression record.
+
+Initial hosted browser runs exposed missing waits for disabled profile controls,
+the genuine late-content anchor-navigation defect fixed in this release, and
+local-only startup timing assumptions. All value, identity, ordering and viewport
+assertions were retained. Hosted readiness assertions now allow 20 seconds and
+whole tests 75 seconds; local limits remain 5 and 45 seconds. Insight pacing is
+still checked with 15-second waits, starting after `LIVE REPLAY` is established.
+The two delayed-evidence navigation regression checks bring the suite to 40 tests.
+
+The release was resumed from successful saved cloud builds after the Windows
+log-streaming failure, avoiding duplicate API builds. The final script's
+`--no-logs`/explicit-status path passed parsing and the three non-deploying guard
+checks, but its entire paid `-Apply` path was not rerun solely to exercise that
+change. Both Bicep templates compiled and the actual app deployment passed live
+validation. Later test, script and documentation commits do not change the
+deployed application source revisions recorded above.
+
+**Limitations:** Scale-to-zero introduces cold-start delay; no production load or
+latency SLO was established. No Log Analytics workspace or retained application-log
+ingestion was provisioned. The registry's approximately US$5 full-month charge can
+exceed INR 300; alerts are not spending caps. No independent Agy sign-off, current
+feature-branch GitHub CI result, push, merge or platform submission is claimed.
+The application still makes no Foundry coaching calls.
 
 ## Official sources
 

@@ -44,6 +44,10 @@ on October 25; it does not complete the AI coaching workflow.
 
 ## Azure release
 
+Public synthetic demo: [Open ReactCoach 11](https://reactcoach-demo-web.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io).
+The [Rust API health endpoint](https://reactcoach-demo-api.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io/api/v1/health)
+is public. Scale-to-zero can delay the first load. Foundry coaching remains pending.
+
 Container packaging, Consumption Container Apps templates and a guarded deployment
 script are available. The web image embeds its public API URL at build time;
 registry pulls use managed identity rather than passwords. Deployment and public
