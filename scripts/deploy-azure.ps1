@@ -49,6 +49,10 @@ if ($azureCommand) {
     $script:azureCliCommand = $portable
 }
 $env:AZURE_CORE_COLLECT_TELEMETRY = 'false'
+# ACR streams Unicode banners; Windows pipe encodings can otherwise abort the
+# CLI after a successful cloud build. These settings affect this process only.
+$env:PYTHONIOENCODING = 'utf-8'
+$env:PYTHONUTF8 = '1'
 $env:AZURE_EXTENSION_USE_DYNAMIC_INSTALL = 'no'
 $env:AZURE_CORE_ENABLE_BROKER_ON_WINDOWS = 'false'
 
