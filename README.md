@@ -48,6 +48,15 @@ viewing them makes no new paid model call.
 See [the coaching contract](docs/FOUNDRY_COACHING_CONTRACT.md) and
 [Phase 3 verification](docs/PHASE_3_VERIFICATION.md).
 
+**Phase 4, deployed:** source-timed tactical cues open the shared evidence
+viewer. A final recap separates recorded goals, score and event counts from
+authored tactical alternatives and saved coaching. It waits for matching final
+snapshot evidence and supports recovery, seek/restart and keyboard navigation.
+The Phase 4 branch is published in [PR #5](https://github.com/devgupta-9/reactcoach-11/pull/5)
+and serves the public Azure demo. Corrected CI and all 68 hosted browser checks
+pass; the PR remains unmerged. See
+[the verification record](docs/PHASE_4_MATCH_EXPERIENCE.md).
+
 **Not implemented:** real-player scouting data, continuous optimal opponent
 simulation, realistic ball physics or calibrated outcome predictions.
 

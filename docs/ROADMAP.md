@@ -18,9 +18,9 @@ The coaching simulator is a differentiator *inside* the match-intelligence pipel
 | --- | --- | --- | --- |
 | 1. Foundation | Completed | **DONE** | Phase 1 PR #1 merged; Rust/API/Next.js/replay/CI baseline |
 | 2A. Spatial simulation | Completed | **DONE** | Phase 2A PR #2 merged; 61 Rust tests and 14 browser checks reported; post-merge main CI green |
-| **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE; feature branch published** | 81 original Rust tests; 23 events / 2 moments verified on Azure; final Agy review blocked; main merge pending |
-| 3. Microsoft Foundry intelligence | Oct 13–17 | DONE; published and deployed | Two real validated compositions; 104 all-feature Rust tests, 44 hosted browser and 18 public smoke checks pass; main merge pending |
-| 4. Broadcast & audience experience | Oct 17–21 | IN PROGRESS | Tactical Studio and explanation-level Fan/Analyst views deployed; broadcast overlay, recap and broader personalization pending |
+| **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE; merged into main** | 81 original Rust tests; 23 events / 2 moments verified on Azure; historical final Agy review blocked |
+| 3. Microsoft Foundry intelligence | Oct 13–17 | DONE; merged and deployed | Two real validated compositions; 104 all-feature Rust tests, 44 hosted browser and 18 public smoke checks pass |
+| 4. Broadcast & audience experience | Oct 17–21 | DONE; published and deployed; review PENDING | PR #5 unmerged; corrected push/PR CI green, 104 Rust tests, 68 hosted browser and 18 endpoint/SSE checks pass |
 | 5. Azure deployment & QA | Oct 21–24 | IN PROGRESS | Foundry-integrated public HTTPS demo and GitHub CI pass; release automation and retained monitoring remain pending |
 | 6. Demo & submission | Oct 24–26 | PENDING | Public repo/demo, sub-two-minute video, valid platform submission |
 
@@ -69,8 +69,9 @@ Next.js security patch are delivered. The public Azure demo passed 40 local and
 and owner-requested alerts are configured; they are not spending caps.
 Real Foundry HTTP 200/`READY` verifies model access only. Phase 3 now implements
 local constrained narrative composition and explanation-level audience modes;
-two real source-validated explanations are recorded and deployed. Full broadcast
-personalization/recap remain Phase 4. See [release scope, costs and acceptance](AZURE_DEPLOYMENT.md)
+two real source-validated explanations are recorded and deployed. Phase 4 timed
+cues and recap are published and Azure-verified on October 26; PR #5 remains unmerged.
+See [Phase 4 verification](PHASE_4_MATCH_EXPERIENCE.md), [release scope, costs and acceptance](AZURE_DEPLOYMENT.md)
 and [Phase 3 verification](PHASE_3_VERIFICATION.md).
 
 ## Submission readiness
@@ -78,9 +79,9 @@ and [Phase 3 verification](PHASE_3_VERIFICATION.md).
 - [x] Match-triggered synthetic tactical intelligence, at least two moments (locally verified)
 - [x] Evidence-backed original versus corrected spatial replay (Tactical Studio verified on Azure)
 - [x] Genuine verified Foundry explanation and deterministic fallback (two real compositions served by Azure)
-- [x] Fan and Analyst explanation modes grounded in identical facts (deployed; full broadcast personalization remains Phase 4)
-- [ ] Broadcast-style overlay and match recap
-- [x] Public tested Azure demo (Phase 3: 44 desktop/mobile browser checks; 18 endpoint/SSE checks, October 25)
+- [x] Fan and Analyst explanation modes grounded in identical facts (deployed; reused by the locally verified Phase 4 evidence viewer)
+- [x] Timed tactical cue and match recap (PR #5 published; corrected CI and hosted acceptance passed, October 26)
+- [x] Public tested Azure demo (Phase 4: 68 desktop/mobile browser checks; 18 endpoint/SSE checks and separate unmocked replay-to-recap journey, October 26)
 - [ ] Public repo, demo video under two minutes, project description and platform submission
 
 ## Scope freeze and caveats
