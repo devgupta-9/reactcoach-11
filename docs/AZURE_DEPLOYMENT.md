@@ -143,6 +143,21 @@ Foundry per visitor. Deploying it does not complete Phase 3 or full Phase 4.
 No resource deletion, GitHub push/merge or platform submission is automatic. Review
 ongoing costs after judging and obtain authorization before removing resources.
 
+## Incremental frontend corrections
+
+`apps.bicep` accepts `apiImageTag`, defaulting to the common `imageTag`. A
+frontend-only release can build the web image under a new revision tag and pass
+the previous verified API tag explicitly. This preserves API provenance and
+avoids paying for an unchanged Rust rebuild. Record both image references in the
+deployment receipt; the normal release script still builds both services.
+
+A release browser check exposed a navigation race: late scenario evidence
+increased the page height while global smooth scrolling retained an old anchor
+position. Native instant anchor jumps preserve the destination as content loads.
+The regression test holds the real studio response until navigation, then verifies
+that Decision Lab remains in view after the evidence expands the page. Tactical
+playback animation and camera controls are unchanged.
+
 ## Official sources
 
 - https://nextjs.org/docs/app/api-reference/config/next-config-js/output

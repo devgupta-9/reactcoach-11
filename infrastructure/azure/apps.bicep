@@ -7,6 +7,10 @@ param prefix string = 'reactcoach-demo'
 @minLength(1)
 param imageTag string
 
+// Allow a frontend-only correction to retain the verified API image.
+@minLength(1)
+param apiImageTag string = imageTag
+
 resource environment 'Microsoft.App/managedEnvironments@2025-01-01' existing = {
   name: '${prefix}-env'
 }
@@ -64,7 +68,7 @@ resource apps 'Microsoft.App/containerApps@2025-01-01' = [for service in service
       containers: [
         {
           name: 'app'
-          image: '${registry.properties.loginServer}/reactcoach/${service.name}:${imageTag}'
+          image: '${registry.properties.loginServer}/reactcoach/${service.name}:${service.name == 'api' ? apiImageTag : imageTag}'
           env: service.name == 'api' ? [
             {
               name: 'PORT'
@@ -145,5 +149,5 @@ resource apps 'Microsoft.App/containerApps@2025-01-01' = [for service in service
 
 output apiUrl string = 'https://${apps[0].properties.configuration.ingress.fqdn}'
 output webUrl string = 'https://${apps[1].properties.configuration.ingress.fqdn}'
-output apiImage string = '${registry.properties.loginServer}/reactcoach/api:${imageTag}'
+output apiImage string = '${registry.properties.loginServer}/reactcoach/api:${apiImageTag}'
 output webImage string = '${registry.properties.loginServer}/reactcoach/web:${imageTag}'
