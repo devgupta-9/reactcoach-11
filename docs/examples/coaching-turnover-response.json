@@ -1,0 +1,184 @@
+{
+  "schema_version": "coaching_v1",
+  "insight_id": "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001",
+  "match_id": "demo-match-001",
+  "event_timestamp": 112,
+  "source_event_ids": [
+    6,
+    8,
+    9
+  ],
+  "explanation_id": "coaching_v1:b37b0f3897c5f9a1f021fc14bd80a1f3ddc536e970597467153949f653ae9757",
+  "evidence_digest": "57e321777a6077cb925c9094ad0c2449344244a7f6743840d2fa7ee142a0ea38",
+  "mode": "foundry_composition",
+  "delivery": "precomputed",
+  "focus": "possession",
+  "fallback_reason": null,
+  "generated_at_unix_seconds": 1792936431,
+  "fan": [
+    {
+      "fact_id": "observed",
+      "kind": "observed_fictional_event",
+      "text": "The fictional event log records an attacker losing possession.",
+      "source_refs": [
+        "match-event/demo-match-001/6",
+        "match-event/demo-match-001/8",
+        "match-event/demo-match-001/9"
+      ]
+    },
+    {
+      "fact_id": "authored",
+      "kind": "authored_scenario",
+      "text": "This linked scenario explores a hypothetical precursor to the turnover, not a tracking reconstruction. Positions and ratings are synthetic and uncalibrated.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/fixture"
+      ]
+    },
+    {
+      "fact_id": "defender",
+      "kind": "simulation_result",
+      "text": "Against the original continuation, the modeled defender selected: close wide angle.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline:event:001"
+      ]
+    },
+    {
+      "fact_id": "baseline",
+      "kind": "simulation_result",
+      "text": "Continuing wide right ended without friendly possession in the model.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline"
+      ]
+    },
+    {
+      "fact_id": "correction",
+      "kind": "simulation_result",
+      "text": "The simulator supports comparing release pass: it ended with friendly possession and improved the configured objective.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline",
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass"
+      ]
+    },
+    {
+      "fact_id": "objective",
+      "kind": "simulation_result",
+      "text": "The comparison prioritizes keeping possession, then bypassing the defender, forward progress and clearance.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline",
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass"
+      ]
+    },
+    {
+      "fact_id": "support",
+      "kind": "authored_scenario",
+      "text": "This authored situation includes a supporting teammate.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/simulation/input"
+      ]
+    },
+    {
+      "fact_id": "limits",
+      "kind": "model_limitation",
+      "text": "This synthetic comparison predicts no real-match success probability and guarantees no outcome.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/limitations"
+      ]
+    }
+  ],
+  "analyst": [
+    {
+      "fact_id": "observed",
+      "kind": "observed_fictional_event",
+      "text": "Logged event evidence at 112s ([6, 8, 9]): The fictional event log records an attacker losing possession.",
+      "source_refs": [
+        "match-event/demo-match-001/6",
+        "match-event/demo-match-001/8",
+        "match-event/demo-match-001/9"
+      ]
+    },
+    {
+      "fact_id": "authored",
+      "kind": "authored_scenario",
+      "text": "Scenario turnover-wide-001 uses authored geometry and uncalibrated profiles. This linked scenario explores a hypothetical precursor to the turnover, not a tracking reconstruction.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/fixture"
+      ]
+    },
+    {
+      "fact_id": "defender",
+      "kind": "simulation_result",
+      "text": "Recorded baseline defensive counters: close wide angle; these are simulated choices.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline:event:001"
+      ]
+    },
+    {
+      "fact_id": "baseline",
+      "kind": "simulation_result",
+      "text": "Original branch (wide right) ends without friendly possession with defender bypass=false.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline"
+      ]
+    },
+    {
+      "fact_id": "correction",
+      "kind": "simulation_result",
+      "text": "Under identical starting inputs: The simulator supports comparing release pass: it ended with friendly possession and improved the configured objective.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline",
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass"
+      ]
+    },
+    {
+      "fact_id": "objective",
+      "kind": "simulation_result",
+      "text": "Lexicographic objective (friendly possession, defender bypass, metre-bucketed progress, capped clearance): baseline (false, false, 0, 0); corrected Some((true, true, 12, 11)).",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/baseline",
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/open_play_spatial_v1/alternative:release_pass"
+      ]
+    },
+    {
+      "fact_id": "support",
+      "kind": "authored_scenario",
+      "text": "Supporting teammate present: true. This is scenario input, not observed tracking.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/simulation/input"
+      ]
+    },
+    {
+      "fact_id": "limits",
+      "kind": "model_limitation",
+      "text": "Uncalibrated synthetic attributes; simplified ball transport and interception; horizon-bounded defensive feasibility. No calibrated success probability or real-athlete measurement.",
+      "source_refs": [
+        "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001/limitations"
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "role": "interpreter",
+      "response_id": "resp_0bc9cfa742788ec5016ade09aeb4f88193a6f40a5384983d62",
+      "model": "reactcoach-coach",
+      "input_tokens": 1516,
+      "output_tokens": 55,
+      "total_tokens": 1571
+    },
+    {
+      "role": "challenger",
+      "response_id": "resp_03e4011b2a3a81fb016ade09b04b4c8195bce6763210800663",
+      "model": "reactcoach-coach",
+      "input_tokens": 1576,
+      "output_tokens": 60,
+      "total_tokens": 1636
+    },
+    {
+      "role": "narrator",
+      "response_id": "resp_0c7b3559814584a2016ade09b1cc2c81969ae653e567534ece",
+      "model": "reactcoach-coach",
+      "input_tokens": 1689,
+      "output_tokens": 204,
+      "total_tokens": 1893
+    }
+  ]
+}

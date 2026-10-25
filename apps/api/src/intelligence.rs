@@ -19,6 +19,10 @@ use std::{convert::Infallible, sync::Arc, time::Duration};
 
 const MAX_DETAIL_BYTES: usize = 512 * 1024;
 
+#[cfg(test)]
+#[path = "coaching_tests.rs"]
+mod coaching_tests;
+
 #[derive(Clone)]
 struct Record {
     timestamp: u32,
@@ -31,17 +35,41 @@ struct Record {
 pub struct DemoReplay {
     insights: Vec<TacticalInsight>,
     details: Vec<(String, String)>,
+    coachings: Vec<(String, String)>,
     records: Vec<Record>,
 }
 
 impl DemoReplay {
     /// Called once on a bounded blocking worker before binding the API, never per subscriber.
     pub fn build() -> Result<Self, IntelligenceError> {
+        Self::build_with_artifact(reactcoach_agents::EMBEDDED_ARTIFACT)
+    }
+
+    fn build_with_artifact(artifact: &str) -> Result<Self, IntelligenceError> {
         let events = demo_events();
         let catalog = materialize(DEMO_MATCH_ID, &events, &demo_fixtures())?;
         let mut details = Vec::new();
+        let mut coachings = Vec::new();
         for detail in &catalog.details {
-            let json = serde_json::to_string(detail).expect("validated integer report serializes");
+            #[derive(Serialize)]
+            struct WithCoaching<'a> {
+                #[serde(flatten)]
+                detail: &'a reactcoach_match_engine::intelligence::InsightDetail,
+                coaching: &'a reactcoach_agents::contracts::CoachingExplanation,
+            }
+            let coaching = reactcoach_agents::workflow::resolve(detail, artifact)
+                .map_err(|_| IntelligenceError::Fixture("invalid coaching evidence"))?;
+            tracing::info!(insight_id = %detail.insight.insight_id, mode = ?coaching.mode,
+                explanation_id = %coaching.explanation_id, "Materialized evidence-grounded coaching");
+            coachings.push((
+                detail.insight.insight_id.clone(),
+                serde_json::to_string(&coaching).expect("coaching serializes"),
+            ));
+            let json = serde_json::to_string(&WithCoaching {
+                detail,
+                coaching: &coaching,
+            })
+            .expect("validated integer report serializes");
             if json.len() > MAX_DETAIL_BYTES {
                 return Err(IntelligenceError::Limit);
             }
@@ -73,6 +101,7 @@ impl DemoReplay {
         Ok(Self {
             insights,
             details,
+            coachings,
             records,
         })
     }
@@ -136,6 +165,23 @@ async fn detail(
     Path(id): Path<String>,
     query: Result<Query<TimeQuery>, axum::extract::rejection::QueryRejection>,
 ) -> Response {
+    detail_response(replay, id, query, false)
+}
+
+async fn coaching(
+    State(replay): State<Arc<DemoReplay>>,
+    Path(id): Path<String>,
+    query: Result<Query<TimeQuery>, axum::extract::rejection::QueryRejection>,
+) -> Response {
+    detail_response(replay, id, query, true)
+}
+
+fn detail_response(
+    replay: Arc<DemoReplay>,
+    id: String,
+    query: Result<Query<TimeQuery>, axum::extract::rejection::QueryRejection>,
+    coaching_only: bool,
+) -> Response {
     let Ok(Query(query)) = query else {
         return error(
             StatusCode::BAD_REQUEST,
@@ -169,8 +215,12 @@ async fn detail(
             "Insight does not exist or has not occurred at this timestamp.",
         );
     }
-    let body = &replay
-        .details
+    let bodies = if coaching_only {
+        &replay.coachings
+    } else {
+        &replay.details
+    };
+    let body = &bodies
         .iter()
         .find(|(key, _)| key == &id)
         .expect("materialized detail")
@@ -239,6 +289,7 @@ pub fn router(replay: Arc<DemoReplay>) -> Router {
     Router::new()
         .route("/api/v1/matches/demo/insights", get(list))
         .route("/api/v1/matches/demo/insights/{id}", get(detail))
+        .route("/api/v1/matches/demo/insights/{id}/coaching", get(coaching))
         .route("/api/v1/matches/demo/stream", get(event_stream))
         .with_state(replay)
 }

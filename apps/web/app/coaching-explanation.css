@@ -1,0 +1,17 @@
+.coaching-explanation { margin: 26px 0; padding: 22px; border: 1px solid var(--edge); border-radius: 12px; background: var(--surface); }
+.coaching-heading { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 14px; }
+.coaching-heading small { font: 10px var(--mono); color: var(--cyan); letter-spacing: .05em; }
+.coaching-heading h4 { margin: 8px 0; font-size: 20px; }
+.coaching-audience { display: flex; gap: 6px; }
+.coaching-audience button { min-height: 44px; min-width: 70px; padding: 8px 12px; border: 1px solid var(--edge); border-radius: 6px; background: var(--bg); cursor: pointer; }
+.coaching-audience button[aria-pressed="true"] { color: var(--cyan); border-color: var(--cyan); }
+.coaching-source { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.coaching-lines { display: grid; gap: 16px; margin: 20px 0; }
+.coaching-lines small { color: var(--muted); font: 10px var(--mono); }
+.coaching-lines p { margin: 5px 0 0; line-height: 1.65; }
+.coaching-explanation details { border-top: 1px solid var(--edge); padding-top: 14px; font-size: 12px; }
+.coaching-explanation summary { min-height: 30px; cursor: pointer; }
+.coaching-explanation code { overflow-wrap: anywhere; white-space: normal; }
+.coaching-explanation li { margin-bottom: 10px; }
+.coaching-unavailable { color: var(--muted); }
+@media(max-width:560px) { .coaching-explanation { padding: 16px; }.coaching-heading h4 { font-size: 18px; } }
