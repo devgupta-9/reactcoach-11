@@ -80,8 +80,8 @@ uncalibrated modeling conventions, not realistic biomechanics or success probabi
 
 ## Remaining release work
 
-- Publish/deploy the locally verified Phase 3 saved coaching artifact and API/UI.
-- Broader broadcast overlays, audience personalization, recap and video submission.
+- Publish/deploy locally verified Phase 4 timed cues and recap; rerun hosted acceptance.
+- Demo video and final submission; optional broader audience personalization remains deferred.
 - Retained cloud observability and release automation within the approved budget.
 - Persistence only if a concrete requirement emerges; the current demo remains stateless.
 
@@ -182,6 +182,24 @@ Reduced-motion users retain keyboard scrubbing, chapters and comparison with
 animation disabled. A separate, untransformed role selector handles crowded pitch
 markers. This is a spatial explanation view, not full athlete or ball physics.
 See [UI contracts and verification](TACTICAL_STUDIO_UI.md).
+
+## Phase 4 timed cues and recap (verified locally)
+
+`match-presentation.ts` gates cues on their source event records and accepted
+snapshot. The latest eligible insight appears for 120 synthetic replay seconds;
+seeking reconstructs eligibility and logical IDs prevent repeated transport
+records from restarting the cue. `match-broadcast.tsx` presents the cue below
+the pitch, preserving event-marker access, and reuses the existing shared
+evidence viewer for saved Fan/Analyst coaching and spatial comparisons.
+
+The recap requires `replay-complete` plus a snapshot matching the final accepted
+record's identity, kind, time, match and total record count. The authored segment
+ends on a goal, not a `full_time` record. Delayed or failed final snapshots show
+a recoverable pending state. Goals, score and statistics remain recorded facts;
+the separate tactical section contains authored comparisons and nullable
+corrections. Replay generations clear recap/selection and reject stale requests.
+No new endpoint, model call or simulation calculation is introduced. See
+[Phase 4 contracts and verification](PHASE_4_MATCH_EXPERIENCE.md).
 
 ## Security notes
 

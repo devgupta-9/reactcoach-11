@@ -48,6 +48,13 @@ viewing them makes no new paid model call.
 See [the coaching contract](docs/FOUNDRY_COACHING_CONTRACT.md) and
 [Phase 3 verification](docs/PHASE_3_VERIFICATION.md).
 
+**Phase 4, verified locally:** source-timed tactical cues open the shared evidence
+viewer. A final recap separates recorded goals, score and event counts from
+authored tactical alternatives and saved coaching. It waits for matching final
+snapshot evidence and supports recovery, seek/restart and keyboard navigation.
+The Phase 4 branch has not been published or deployed. See
+[the verification record](docs/PHASE_4_MATCH_EXPERIENCE.md).
+
 **Not implemented:** real-player scouting data, continuous optimal opponent
 simulation, realistic ball physics or calibrated outcome predictions.
 
