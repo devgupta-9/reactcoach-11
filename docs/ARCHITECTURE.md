@@ -16,7 +16,8 @@ Rust workspace:
 - `crates/shared`: serializable event, statistics, snapshot contracts.
 - `crates/analytics`: counts discrete actions; explicitly avoids a misleading time-possession estimate.
 - `crates/match-engine`: validates records/context, computes reproducible snapshots, detects tactical moments and links authored fixtures to spatial evidence.
-- `crates/agents`: planned roles and handoff schema. **No real model calls implemented.**
+- `crates/agents`: typed coaching evidence/validation and saved artifact resolution;
+  optional `foundry` feature adds administrative Responses transport and generation CLI.
 - `apps/api`: Axum REST/SSE API with tracing and origin-restricted CORS.
 - `apps/web`: Next.js presentation.
 
@@ -38,7 +39,8 @@ position, velocity, ball transport and elapsed-time state.
 Profile `acceleration` is a synthetic trait index, not a physical acceleration.
 Offside is a separate scalar position check at the pass instant; it is not a
 complete Law 11 offence assessment. Coaching explanations are deterministic
-templates. No Foundry agents execute these calculations or generate text yet.
+templates. Phase 3 composes separate evidence-linked narratives without changing
+these calculations; see the administrative boundary below.
 
 Scenario changes cancel pending evaluations. Profile editing is paused during
 evaluation, and unapplied edits are labeled. Replay snapshot responses are applied
@@ -76,13 +78,12 @@ uncalibrated modeling conventions, not realistic biomechanics or success probabi
 4. Current action share is the proportion of logged actions and must not be described as possession.
 5. The demo replays a short fictional match sequence, not a live league fixture.
 
-## Planned later phases (NOT yet shipped)
+## Remaining release work
 
-- Microsoft Foundry REST integration and credential management.
-- Multi-agent interpretation, grounded output validators and trace IDs.
-- Azure PostgreSQL/SQLx persistence and a reliable ingestion pipeline.
-- Deployment to Azure Container Apps, cloud observability, secret management.
-- Broadcast-mode UI, localization and video submission.
+- Publish/deploy the locally verified Phase 3 saved coaching artifact and API/UI.
+- Broader broadcast overlays, audience personalization, recap and video submission.
+- Retained cloud observability and release automation within the approved budget.
+- Persistence only if a concrete requirement emerges; the current demo remains stateless.
 
 ## Current API surface
 
@@ -97,6 +98,7 @@ uncalibrated modeling conventions, not realistic biomechanics or success probabi
 | GET | /api/v1/matches/demo/snapshot?at=420 | deterministic snapshot at second |
 | GET | /api/v1/matches/demo/insights?at=420 | timestamp-scoped tactical insight array |
 | GET | /api/v1/matches/demo/insights/{insight_id}?at=420 | source/fixture evidence and full spatial report |
+| GET | /api/v1/matches/demo/insights/{insight_id}/coaching?at=420 | precomputed validated audience explanations or explicit fallback |
 | GET | /api/v1/matches/demo/stream?after=112 | replay SSE: match-event, tactical-insight, replay-complete |
 
 The stream replays 23 fictional records about every 1.25 seconds. Insights follow
@@ -129,6 +131,35 @@ authored decision point. No simulation result is presented as observed tracking.
 See [Phase 2B contracts and limitations](LIVE_MATCH_INTELLIGENCE_CONTRACT.md).
 Future Foundry agents can consume the same detail/report identifiers; no model
 calls, persistence, extra infrastructure or simulation-engine rewrite are introduced.
+
+## Phase 3: bounded Foundry narrative composition
+
+```text
+Immutable InsightDetail → typed approved evidence/wording catalog
+    → administrative CLI: Interpreter → Challenger → Narrator (Foundry Responses)
+    → Rust validation of source IDs, selections, audience parity and stage receipts
+    → reviewed versioned artifact bound to full evidence, wording and prompt policy
+    → API startup validation on existing blocking materializer
+    → stable coaching JSON + Match Center Fan/Analyst panel
+```
+
+Only the optional generation binary links the HTTP/token provider. The public API
+has no model credentials, public generation operation or inference dependency;
+replays, subscribers and cold starts never trigger paid calls. Generation uses
+the existing local Azure CLI Entra identity. Tokens stay in memory.
+
+The model selects and orders approved wording IDs. Rust renders every published
+sentence; arbitrary model prose is rejected. Both audiences carry the same facts,
+including observed fictional events, authored scenario context, model outcomes and
+limitations. Missing, failed or stale artifacts visibly fall back to deterministic
+Rust explanations while retaining simulation evidence. A valid cached artifact
+does not indicate current provider availability. SHA-256 binds content; it is not
+cryptographic proof of provider authorship.
+
+The release includes two source-bound explanations from six completed real Foundry
+role calls on October 25. No Phase 3 deployment is claimed. See
+[contracts and administrative commands](FOUNDRY_COACHING_CONTRACT.md) and
+[verification status](PHASE_3_VERIFICATION.md).
 
 ## Interactive Tactical Studio (local UI slice)
 
@@ -174,6 +205,7 @@ The release script defaults to a non-deploying plan, requires explicit personal
 subscription and expected tenant IDs for writes, rejects unowned existing groups
 and dirty checkouts, and records immutable revision/time image tags for rollback.
 
-One Entra-authenticated Foundry Responses smoke request succeeded on October 25.
-The applications still do not call Foundry; model access and app integration are
-separate acceptance gates. See [Azure deployment](AZURE_DEPLOYMENT.md).
+One Entra-authenticated Foundry Responses smoke request succeeded in the October 25
+deployment increment. Phase 3 adds the bounded administrative generation and saved
+coaching described above. The preceding public deployment has not been updated
+with those changes. See [Azure deployment](AZURE_DEPLOYMENT.md).

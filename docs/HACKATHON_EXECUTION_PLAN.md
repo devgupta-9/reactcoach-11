@@ -64,7 +64,7 @@ Sub-tasks:
 **Guardrail:** Do not spend this milestone expanding generic physics or training on real-player footage.
 
 ### Proper Task 3 — Microsoft Foundry Intelligence
-**Target:** 2026-10-13 to 2026-10-17. **Status:** PENDING. **Owner:** Codex, with bounded review.
+**Target:** 2026-10-13 to 2026-10-17. **Status:** DONE locally (2026-10-25); public rollout PENDING. **Owner:** Codex, with bounded review.
 
 Sub-tasks:
 - Verify Azure subscription, model access, quota, pricing and spending approval *before* provisioning. Make any paid setup a separate explicit approval gate.
@@ -75,6 +75,14 @@ Sub-tasks:
 - Provide a visible deterministic fallback in outage/quota failure. Log request/trace IDs and costs where obtainable, without recording credentials.
 
 **Definition of Done:** At least two source-linked match moments have real, verified Foundry-generated explanations; adversarial/negative tests reject hallucinated evidence; the app remains usable with inference unavailable.
+
+**Technical implementation record, 2026-10-25:** The local Phase 3 workflow uses
+bounded administrative Responses calls and a reviewed saved artifact. Model roles
+select/order approved evidence wording; Rust renders each published sentence.
+This is constrained AI narrative composition. Two real compositions, strict
+validation, deterministic fallback and Fan/Analyst views pass local acceptance.
+The existing public Azure release has not been updated. Scope and target dates
+above are unchanged. See [Phase 3 verification](PHASE_3_VERIFICATION.md).
 
 ### Proper Task 4 — Broadcast Experience and Personalization
 **Target:** 2026-10-17 to 2026-10-21. **Status:** PENDING. **Owner:** Agy frontend; Codex API/integration. Avoid concurrent editing of the same files.

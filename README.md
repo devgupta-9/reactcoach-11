@@ -37,16 +37,25 @@ evidence. See [the API contract](docs/SPATIAL_SIMULATION_CONTRACT.md) and
 Authored scenario geometry is hypothetical and is never described as recovered
 tracking data. Recommendations remain nullable when no improvement is supported.
 
-**Not implemented:** real-player scouting data, continuous optimal opponent simulation,
-evidence-validated Foundry coaching in the application, realistic ball physics or
-calibrated outcome predictions. A separate, bounded Foundry connection test passed
-on October 25; it does not complete the AI coaching workflow.
+**Phase 3, local implementation:** an administrative Rust command runs a bounded
+Foundry Interpreter → Challenger → Narrator workflow. Rust validates selected
+facts and renders approved Fan/Analyst wording; the Match Center displays saved
+explanations or an explicit deterministic fallback. This is constrained narrative
+composition, not unrestricted model-written analysis. The checked-in artifact
+contains two real explanations generated and validated on October 25, with six
+completed role receipts. Local verification is separate from deployment status.
+See [the coaching contract](docs/FOUNDRY_COACHING_CONTRACT.md) and
+[Phase 3 verification](docs/PHASE_3_VERIFICATION.md).
+
+**Not implemented:** real-player scouting data, continuous optimal opponent
+simulation, realistic ball physics or calibrated outcome predictions.
 
 ## Azure release
 
 Public synthetic demo: [Open ReactCoach 11](https://reactcoach-demo-web.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io).
 The [Rust API health endpoint](https://reactcoach-demo-api.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io/api/v1/health)
-is public. Scale-to-zero can delay the first load. Foundry coaching remains pending.
+is public. Scale-to-zero can delay the first load. Phase 3 is not yet deployed;
+the public deployment still serves the preceding release.
 
 Container packaging, Consumption Container Apps templates and a guarded deployment
 script are available. The web image embeds its public API URL at build time;
