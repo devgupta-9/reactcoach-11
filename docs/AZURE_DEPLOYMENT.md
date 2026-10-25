@@ -77,10 +77,11 @@ changing a runtime environment variable does not update client code. The API use
 the exact web HTTPS origin for CORS. `.dockerignore` excludes local credentials,
 environment files, local receipts, node_modules and build outputs from cloud source uploads.
 
-The CLI must use UTF-8 output on Windows; the release script sets
-`PYTHONIOENCODING` and `PYTHONUTF8` for its process. If log streaming fails,
-inspect the existing ACR run status before retrying: a display error does not
-mean the cloud build failed.
+The Windows CLI's isolated Python ignores `PYTHONIOENCODING` and can fail while
+displaying Unicode build logs. The release script uses `--no-logs`, which polls
+the build without streaming, and requires each returned run status to be
+`Succeeded`. If log streaming fails during manual use, inspect the existing ACR
+run status before retrying: a display error does not mean the cloud build failed.
 
 Local Docker is optional: Azure ACR Tasks performs the Linux builds. To build
 locally when Docker is available:

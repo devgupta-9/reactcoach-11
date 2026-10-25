@@ -49,10 +49,6 @@ if ($azureCommand) {
     $script:azureCliCommand = $portable
 }
 $env:AZURE_CORE_COLLECT_TELEMETRY = 'false'
-# ACR streams Unicode banners; Windows pipe encodings can otherwise abort the
-# CLI after a successful cloud build. These settings affect this process only.
-$env:PYTHONIOENCODING = 'utf-8'
-$env:PYTHONUTF8 = '1'
 $env:AZURE_EXTENSION_USE_DYNAMIC_INSTALL = 'no'
 $env:AZURE_CORE_ENABLE_BROKER_ON_WINDOWS = 'false'
 
@@ -94,9 +90,13 @@ $apiUrl = $bootstrap.apiUrl.value
 Push-Location $repoRoot
 try {
     Write-Host 'Building the Rust API Linux image in Azure.'
-    Invoke-Azure -CliArguments @('acr', 'build', '--subscription', "$SubscriptionId", '--registry', $registry, '--platform', 'linux/amd64', '--image', "reactcoach/api:$imageTag", '--file', 'apps/api/Dockerfile', '--timeout', '1800', '.')
+    # Suppress Unicode log streaming: the Windows CLI uses isolated Python and
+    # ignores PYTHONIOENCODING. --no-logs still polls for the actual run result.
+    $apiBuild = Invoke-Azure -AsJson -CliArguments @('acr', 'build', '--subscription', "$SubscriptionId", '--registry', $registry, '--platform', 'linux/amd64', '--image', "reactcoach/api:$imageTag", '--file', 'apps/api/Dockerfile', '--timeout', '1800', '--no-logs', '.')
+    if ($apiBuild.status -ne 'Succeeded') { throw "API image run $($apiBuild.runId) did not succeed: $($apiBuild.status)" }
     Write-Host 'Building Next.js with the public API URL embedded at build time.'
-    Invoke-Azure -CliArguments @('acr', 'build', '--subscription', "$SubscriptionId", '--registry', $registry, '--platform', 'linux/amd64', '--image', "reactcoach/web:$imageTag", '--file', 'apps/web/Dockerfile', '--build-arg', "NEXT_PUBLIC_API_URL=$apiUrl", '--timeout', '1800', '.')
+    $webBuild = Invoke-Azure -AsJson -CliArguments @('acr', 'build', '--subscription', "$SubscriptionId", '--registry', $registry, '--platform', 'linux/amd64', '--image', "reactcoach/web:$imageTag", '--file', 'apps/web/Dockerfile', '--build-arg', "NEXT_PUBLIC_API_URL=$apiUrl", '--timeout', '1800', '--no-logs', '.')
+    if ($webBuild.status -ne 'Succeeded') { throw "Web image run $($webBuild.runId) did not succeed: $($webBuild.status)" }
 } finally {
     Pop-Location
 }
