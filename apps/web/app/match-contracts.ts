@@ -1,6 +1,6 @@
 export type Team = "home" | "away";
 export type EventKind = "kick_off" | "pass" | "shot" | "goal" | "tackle" | "turnover" | "full_time" | "carry" | "pressure" | "interception";
-export type MatchEvent = { id: number; timestamp_seconds: number; team: Team; kind: EventKind; player: string; position: { x: number; y: number } };
+export type MatchEvent = { id: number; timestamp_seconds: number; team: Team; kind: EventKind; player: string; position: { x: number; y: number }; match_id?: string };
 export type MatchStatistics = { home_passes: number; away_passes: number; home_shots: number; away_shots: number; home_actions: number; away_actions: number; home_action_share_pct: number; away_action_share_pct: number };
 export type MatchSnapshot = { match_id: string; elapsed_seconds: number; score: { home: number; away: number }; statistics: MatchStatistics; events_processed: number; latest_event: MatchEvent | null };
 export type TacticalAction = "direct_dribble" | "wide_left" | "wide_right" | "release_pass" | "one_two" | "retain";

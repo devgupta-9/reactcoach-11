@@ -3,7 +3,9 @@
 import DecisionLab from "./decision-lab";
 import TacticalInsights from "./tactical-insights";
 import TacticalStudio from "./tactical-studio";
-import { useState } from "react";
+import { TimedTacticalMoment } from "./match-broadcast";
+import { useRef, useState } from "react";
+import { evidenceButtonId } from "./match-presentation";
 import { timecode, type EventKind } from "./match-contracts";
 import { useMatchReplay } from "./use-match-replay";
 
@@ -13,9 +15,24 @@ export default function HomePage() {
   const [replay, setReplay] = useState({ at: 0, generation: 0 });
   const [seek, setSeek] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
+  const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
+  const [focusRevision, setFocusRevision] = useState(0);
+  const inspectionTrigger = useRef<HTMLElement | null>(null);
   const { snapshot, events, insights, status, error } = useMatchReplay(replay);
   const stats = snapshot?.statistics;
   const latest = events.find(event => event.id === selectedEvent) ?? snapshot?.latest_event;
+  function inspectMoment(id: string | null) {
+    if (id) {
+      inspectionTrigger.current = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
+      setFocusRevision(previous => previous + 1);
+    } else {
+      const fallback = selectedInsight ? document.getElementById(evidenceButtonId(selectedInsight)) : null;
+      (inspectionTrigger.current?.isConnected ? inspectionTrigger.current : fallback)?.focus();
+    }
+    setSelectedInsight(id);
+    const source = insights.find(insight => insight.insight_id === id)?.source_event_ids.at(-1);
+    if (source !== undefined) setSelectedEvent(source);
+  }
   return (
     <main className="shell">
       <header className="topbar">
@@ -40,21 +57,24 @@ export default function HomePage() {
         </section>
 
         <div className="replay-controls" aria-label="Replay controls">
-          <button type="button" aria-label="Restart replay" onClick={() => { setSelectedEvent(null); setSeek(0); setReplay(previous => ({ at: 0, generation: previous.generation + 1 })); }}>↺ Restart replay</button>
+          <button type="button" aria-label="Restart replay" onClick={() => { setSelectedEvent(null); setSelectedInsight(null); setSeek(0); setReplay(previous => ({ at: 0, generation: previous.generation + 1 })); }}>↺ Restart replay</button>
           <label>Start at second <input type="number" min="0" max="420" step="1" value={seek} onChange={event => setSeek(Number(event.target.value))} /></label>
-          <button type="button" disabled={!Number.isInteger(seek) || seek < 0 || seek > 420} onClick={() => { setSelectedEvent(null); setReplay(previous => ({ at: seek, generation: previous.generation + 1 })); }}>Seek replay</button>
+          <button type="button" disabled={!Number.isInteger(seek) || seek < 0 || seek > 420} onClick={() => { setSelectedEvent(null); setSelectedInsight(null); setReplay(previous => ({ at: seek, generation: previous.generation + 1 })); }}>Seek replay</button>
           <span className="replay-note">Accelerated playback · 23 authored events</span>
         </div>
         {error && <div className="error" role="alert">Match replay: {error}.</div>}
 
-        <TacticalInsights key={replay.generation} insights={insights} />
+        <TacticalInsights key={replay.generation} insights={insights} selected={selectedInsight} focusRevision={focusRevision} onSelect={inspectMoment} />
 
         <section className="content-grid">
           <div className="panel pitch-panel">
             <div className="panel-heading"><div><small>THE MATCH, AT A GLANCE</small><h2>Where it happened</h2></div><span className="pill">{events.length} streamed events</span></div>
-            <div className="pitch" aria-label="Synthetic football pitch and event positions">
+            <div className="pitch-stage"><div className="pitch" aria-label="Synthetic football pitch and event positions">
               <div className="midline" /><div className="centercircle" /><div className="box-left" /><div className="box-right" />
               {events.map(event => <button type="button" key={event.id} className={`pitch-dot ${event.team} ${event.kind === "goal" ? "goal" : ""}`} aria-label={`Event ${event.id}: ${event.player}, ${label(event.kind)} at ${timecode(event.timestamp_seconds)}`} aria-pressed={latest?.id === event.id} onClick={() => setSelectedEvent(event.id)} style={{ left: `${event.position.x}%`, top: `${event.position.y}%` }} />)}
+            </div>
+              <TimedTacticalMoment key={replay.generation} insights={insights} events={events} snapshot={snapshot}
+                complete={status === "replay complete"} startAt={replay.at} unavailable={Boolean(error)} onInspect={inspectMoment} />
             </div>
             <div className="legend"><span><i className="legend-home" /> North City</span><span><i className="legend-away" /> South United</span><span>Select a dot to inspect the event</span></div>
           </div>
@@ -80,7 +100,7 @@ export default function HomePage() {
 
       <div id="decision-lab" className="decision-lab-anchor"><DecisionLab /></div>
 
-      <footer><div className="footer-brand">REACTCOACH <span>11</span></div><p>Learn the decision. Understand the difference.</p><small>Synthetic dataset only · No affiliation with football clubs or leagues · Microsoft Foundry integration is planned.</small></footer>
+      <footer><div className="footer-brand">REACTCOACH <span>11</span></div><p>Learn the decision. Understand the difference.</p><small>Synthetic dataset only · No affiliation with football clubs or leagues · Saved, evidence-validated Microsoft Foundry coaching.</small></footer>
     </main>
   );
 }

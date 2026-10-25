@@ -1,0 +1,17 @@
+.pitch-stage { position: relative; }
+.timed-moment { position: absolute; z-index: 3; right: 12px; bottom: 12px; width: min(480px, calc(100% - 24px)); border: 1px solid #638b7c; border-radius: 8px; padding: 12px 16px 16px; background: #121c16f5; box-shadow: 0 8px 24px #0003; animation: moment-enter .2s ease-out; overflow-wrap: anywhere; }
+.moment-cue-heading, .moment-cue-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
+.moment-cue-heading > small { color: var(--cyan); font: 10px var(--mono); letter-spacing: .08em; }
+.moment-cue-heading time { color: var(--ink); margin-left: 12px; }
+.moment-dismiss { background: transparent; border: 0; color: var(--muted); font-size: 23px; min-width: 44px; min-height: 44px; cursor: pointer; margin-right: -8px; }
+.timed-moment h3 { margin: 0 0 12px; font-size: 16px; line-height: 1.45; letter-spacing: -.02em; font-weight: 600; }
+.moment-actions { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0 0 16px; font-size: 11px; color: var(--muted); line-height: 1.6; }
+.moment-actions strong { display: block; font-size: 13px; color: var(--ink); font-weight: 550; }
+.moment-cue-footer > small { font-size: 10px; color: var(--muted); line-height: 1.6; }
+.moment-inspect { display: inline-flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 44px; padding: 10px 14px; border: 1px solid #68835a; border-radius: 5px; background: #293b21; color: #e1f0d1; font-size: 11px; cursor: pointer; }
+.tactical-evidence { scroll-margin-top: 24px; }
+.tactical-evidence:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+@keyframes moment-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media(max-width:1100px) { .timed-moment { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 12px; box-shadow: none; } }
+@media(max-width:560px) { .timed-moment { padding: 12px; }.timed-moment h3 { font-size: 15px; }.moment-cue-footer { align-items: start; }.moment-inspect { width: 100%; } }
+@media(prefers-reduced-motion:reduce) { .timed-moment { animation: none; } }
