@@ -5,16 +5,16 @@ the unpublished Phase 2B and Tactical Studio commits. The owner requested starti
 Azure deployment on the existing pay-as-you-go account. No active Azure credits
 were found in the billing profile when checked on October 24.
 
-## Scope and missing stages
+## Scope and missing stages — updated 2026-10-26
 
 | Stage | Evidence / acceptance gate |
 | --- | --- |
 | Deterministic engine, replay and Tactical Studio | Verified locally and on Azure: all three decision scenarios, offside and both spatial moments retained |
 | Foundry resource and model access | Real Responses smoke test returned HTTP 200 and `READY` on October 25; 11 input / 19 output tokens; one request, no retry |
-| Foundry application integration | **Pending**: interpreter, challenger, narrator, factual validator, outage fallback and two real evidence-linked explanations |
-| Audience experience | **Pending**: distinct Fan/Analyst views, synchronized broadcast overlay and evidence-grounded recap; existing studio is only part of this phase |
-| Public Azure hosting | **Done**: successful Linux builds, healthy HTTPS endpoints, 40 hosted browser checks and 19 endpoint/SSE checks |
-| Submission | **Pending**: review/publication of local branches, public repo/demo links, video under two minutes and owner submission; internal target October 26 |
+| Foundry application integration | **Done**: bounded interpreter/challenger/narrator composition, deterministic validation, fallback and two real saved explanations served by Azure |
+| Audience experience | **Done**: Fan/Analyst explanations, source-timed tactical cues, shared evidence inspection and recorded-versus-modeled recap |
+| Public Azure hosting | **Done**: Phase 4 web-only rollout; healthy HTTPS endpoints, 68 hosted browser checks, 18 endpoint/SSE checks and unmocked replay-to-recap acceptance |
+| Submission | **Pending**: PR #5 review/merge, video under two minutes and owner platform submission; public repo/demo links are available; internal target October 26 |
 
 The official submission deadline is October 27, 11:59 PM Pacific, equivalent to
 **October 28, 12:29 PM IST**. The public demo must remain accessible through the
@@ -139,7 +139,8 @@ user authentication. CORS controls browser access, not direct HTTP callers. Maxi
 replicas bound scaling, not request admission. Before adding publicly callable model
 generation, implement bounded materialization/caching and caller/workload controls;
 do not expose an unbounded paid prompt endpoint. The current app does not invoke
-Foundry per visitor. Deploying it does not complete Phase 3 or full Phase 4.
+Foundry per visitor. Deployment alone does not establish acceptance; the verified
+Phase 3/4 records below provide that evidence. Video and platform submission remain pending.
 
 No resource deletion, GitHub push/merge or platform submission is automatic. Review
 ongoing costs after judging and obtain authorization before removing resources.
@@ -279,6 +280,50 @@ The GitHub connector opened its required PR confirmation form. No draft PR was
 created without **Submit**, so PR creation is still pending that interaction.
 Branch publication and Azure rollout are complete independently of the PR form.
 No merge, branch deletion, new infrastructure or platform submission occurred.
+
+## Phase 4 published release — 2026-10-26
+
+[PR #5](https://github.com/devgupta-9/reactcoach-11/pull/5) publishes the timed
+tactical cue and evidence-grounded recap. It remains open and unmerged.
+Source commit `29988e18ef3477cddb855518c5d0119df8a1dfa3` passed both
+[push CI](https://github.com/devgupta-9/reactcoach-11/actions/runs/40227980336)
+and [PR CI](https://github.com/devgupta-9/reactcoach-11/actions/runs/40227983316):
+104 all-feature Rust tests, all static/build gates and 68 browser checks.
+Production dependency audit found 0 vulnerabilities.
+
+The initial CI run had one mobile animation-sampling failure. A slow-animation
+reproduction failed on both local projects before the test was corrected to await
+finite animation completion and measure rectangles in one browser evaluation.
+Containment, overflow and control assertions retain their original limits.
+
+Only the existing web image changed:
+
+- ACR run `ch6`: Succeeded.
+- Image: `rclgz67wzypxwhw.azurecr.io/reactcoach/web:29988e18ef34-20261025195523`.
+- Digest: `sha256:bbc34683b23e24312ec3c54ceea783f8bd75d6faa72c6399c14ad8c64af5b879`.
+- Ready revision: `reactcoach-demo-web--p4-29988e18ef34`, healthy, 100% traffic.
+- API retained image `reactcoach/api:4080f3e866a3-20261025142545` and revision
+  `reactcoach-demo-api--0000001`.
+
+The direct existing-app update did not run bootstrap, provider registration,
+role assignments or infrastructure deployments. Both apps retain 0.25 vCPU,
+0.5 GiB and 0–1 replicas. No new infrastructure or Foundry inference was used;
+the single existing-registry ACR web build is billable.
+
+Hosted acceptance: **68 browser tests passed**, 0 failed/skipped (5.3 minutes),
+and **18 endpoint/security/SSE checks passed**, 0 failed. A separate unmocked
+browser replay verified all 23 actual events through the final goal, coherent
+recap totals, two moments, saved Foundry coaching and the linked baseline trace.
+It reported 0 browser errors and 0 overflow at 1440px, 1024px and 390px.
+Independent screenshot review found no material issues.
+
+The immediately preceding live web image was captured before rollout:
+`rclgz67wzypxwhw.azurecr.io/reactcoach/web:4080f3e866a3-20261025142545`,
+digest `sha256:4467f4ee8822af6882be074b59c0f287a260a4c2ccc0263d42053c974b174fe9`.
+Use this web-only rollback target if required; the older Phase 3 section records
+its own historical predecessor. Rollback was not needed. Detailed receipts and
+logs remain in ignored `.local/`; see [Phase 4 verification](PHASE_4_MATCH_EXPERIENCE.md).
+Later documentation-only commits preserve the deployed application source above.
 
 ## Official sources
 

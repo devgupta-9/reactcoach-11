@@ -80,7 +80,7 @@ uncalibrated modeling conventions, not realistic biomechanics or success probabi
 
 ## Remaining release work
 
-- Publish/deploy locally verified Phase 4 timed cues and recap; rerun hosted acceptance.
+- Review/merge published Phase 4 PR #5; Azure rollout and hosted acceptance passed.
 - Demo video and final submission; optional broader audience personalization remains deferred.
 - Retained cloud observability and release automation within the approved budget.
 - Persistence only if a concrete requirement emerges; the current demo remains stateless.
@@ -183,7 +183,7 @@ animation disabled. A separate, untransformed role selector handles crowded pitc
 markers. This is a spatial explanation view, not full athlete or ball physics.
 See [UI contracts and verification](TACTICAL_STUDIO_UI.md).
 
-## Phase 4 timed cues and recap (verified locally)
+## Phase 4 timed cues and recap (deployed and verified)
 
 `match-presentation.ts` gates cues on their source event records and accepted
 snapshot. The latest eligible insight appears for 120 synthetic replay seconds;
@@ -225,5 +225,6 @@ and dirty checkouts, and records immutable revision/time image tags for rollback
 
 One Entra-authenticated Foundry Responses smoke request succeeded in the October 25
 deployment increment. Phase 3 adds the bounded administrative generation and saved
-coaching described above. The preceding public deployment has not been updated
-with those changes. See [Azure deployment](AZURE_DEPLOYMENT.md).
+coaching described above, now served by the public demo. The Phase 4 release
+updates only the existing web image and preserves the API and infrastructure
+configuration. See [Azure deployment](AZURE_DEPLOYMENT.md).

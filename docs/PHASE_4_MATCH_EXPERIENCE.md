@@ -1,6 +1,6 @@
 # Phase 4 — timed tactical moments and match recap
 
-Status: Done locally, 2026-10-26; branch published, CI correction and hosted verification In Progress. Baseline main:
+Status: Done, published and Azure-verified, 2026-10-26; PR #5 remains unmerged. Baseline main:
 `f5cee67453c99743fe60f8de1a5b0bf5ad3bbd42` (merged PR #4).
 Branch: `feat/phase-4-match-experience`.
 
@@ -42,7 +42,8 @@ snapshot, source-linked recap and nullable recommendations, keyboard,
 reduced-motion and mobile checks. Document overflow measured zero at 1440px,
 1024px and 390px. Independent screenshot review and full local project gates pass.
 
-Publication, deployment, video and final submission are separate later steps.
+Publication, deployment and hosted acceptance are complete. PR review/merge,
+video and final submission remain separate later steps.
 
 ## Final local verification — 2026-10-26
 
@@ -75,8 +76,8 @@ Earlier cue commits: `ead7758`, `89a2fdf`.
 The timed cue sits below the pitch to preserve selectable event markers.
 Its 120-second lifetime follows the synthetic replay clock, not wall time.
 The recap is deterministic presentation of existing evidence; it does not generate
-new AI prose or make paid inference calls. Publication, remote CI and hosted
-Phase 4 acceptance have not been performed in this increment.
+new AI prose or make paid inference calls. This local record preceded publication;
+remote CI and hosted release acceptance are recorded below.
 
 ## Publication and CI correction — 2026-10-26
 
@@ -96,8 +97,40 @@ Phase 4 acceptance have not been performed in this increment.
 - An independent Codex helper reviewed this diagnosis read-only and agreed that
   the evidence identifies an animation-sampling race. The corrected full local
   suite passed 68 tests, 0 failed/skipped (2.4 minutes); lint and typecheck passed.
-  Corrected remote CI and hosted verification remain pending. No Azure rollout
-  has occurred.
+  Corrected remote CI and hosted release acceptance subsequently passed as
+  recorded below.
+
+## Verified Azure release — 2026-10-26
+
+- Source: `29988e18ef3477cddb855518c5d0119df8a1dfa3`.
+  [Push CI](https://github.com/devgupta-9/reactcoach-11/actions/runs/40227980336)
+  and [PR CI](https://github.com/devgupta-9/reactcoach-11/actions/runs/40227983316)
+  both passed: infrastructure guards/templates, Rust format/Clippy/104 tests,
+  web lint/typecheck/build and 68 browser checks. Neither browser run reported
+  failures, skips or flaky tests. Production npm audit: 0 vulnerabilities.
+- One existing-registry web build, ACR run `ch6`, succeeded. Image:
+  `rclgz67wzypxwhw.azurecr.io/reactcoach/web:29988e18ef34-20261025195523`.
+  Digest: `sha256:bbc34683b23e24312ec3c54ceea783f8bd75d6faa72c6399c14ad8c64af5b879`.
+- Existing web app updated directly, without reapplying bootstrap/templates.
+  Revision `reactcoach-demo-web--p4-29988e18ef34` is healthy and serves 100% traffic.
+  The API image/revision, infrastructure, identities, resource sizes and scaling
+  remain unchanged: each app retains 0.25 vCPU, 0.5 GiB and 0–1 replicas.
+- [Public demo](https://reactcoach-demo-web.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io):
+  **68 hosted desktop/mobile browser tests passed**, 0 failed/skipped (5.3 minutes).
+  **18 endpoint/security/SSE checks passed**, 0 failed.
+- A separate unmocked browser journey started replay from zero, accepted all
+  23 actual SSE records through the final goal, verified recap totals and two
+  moments, and opened the linked saved Foundry composition and baseline trace.
+  Browser errors: 0. Overflow: 0 at 1440px, 1024px and 390px.
+  Independent screenshot review of that live recap found no material issues.
+- No new infrastructure or paid Foundry inference occurred. The single ACR
+  build is billable under the existing approved deployment scope; this record
+  does not claim an invoiced cost.
+- Prior web image captured for rollback:
+  `rclgz67wzypxwhw.azurecr.io/reactcoach/web:4080f3e866a3-20261025142545`,
+  digest `sha256:4467f4ee8822af6882be074b59c0f287a260a4c2ccc0263d42053c974b174fe9`.
+  Rollback was not needed. [PR #5](https://github.com/devgupta-9/reactcoach-11/pull/5)
+  is open and unmerged; no merge, branch deletion or platform submission occurred.
 
 ## Historical verified increments — 2026-10-25
 
