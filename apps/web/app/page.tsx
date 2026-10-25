@@ -69,7 +69,7 @@ export default function HomePage() {
         <section className="content-grid">
           <div className="panel pitch-panel">
             <div className="panel-heading"><div><small>THE MATCH, AT A GLANCE</small><h2>Where it happened</h2></div><span className="pill">{events.length} streamed events</span></div>
-            <div className="pitch-stage"><div className="pitch" aria-label="Synthetic football pitch and event positions">
+            <div className="match-pitch-stage"><div className="pitch" aria-label="Synthetic football pitch and event positions">
               <div className="midline" /><div className="centercircle" /><div className="box-left" /><div className="box-right" />
               {events.map(event => <button type="button" key={event.id} className={`pitch-dot ${event.team} ${event.kind === "goal" ? "goal" : ""}`} aria-label={`Event ${event.id}: ${event.player}, ${label(event.kind)} at ${timecode(event.timestamp_seconds)}`} aria-pressed={latest?.id === event.id} onClick={() => setSelectedEvent(event.id)} style={{ left: `${event.position.x}%`, top: `${event.position.y}%` }} />)}
             </div>

@@ -1,5 +1,5 @@
-.pitch-stage { position: relative; }
-.timed-moment { position: absolute; z-index: 3; right: 12px; bottom: 12px; width: min(480px, calc(100% - 24px)); border: 1px solid #638b7c; border-radius: 8px; padding: 12px 16px 16px; background: #121c16f5; box-shadow: 0 8px 24px #0003; animation: moment-enter .2s ease-out; overflow-wrap: anywhere; }
+.match-pitch-stage { position: relative; }
+.timed-moment { position: relative; width: 100%; margin-top: 12px; border: 1px solid #638b7c; border-radius: 8px; padding: 12px 16px 16px; background: #121c16; animation: moment-enter .2s ease-out; overflow-wrap: anywhere; }
 .moment-cue-heading, .moment-cue-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
 .moment-cue-heading > small { color: var(--cyan); font: 10px var(--mono); letter-spacing: .08em; }
 .moment-cue-heading time { color: var(--ink); margin-left: 12px; }
@@ -12,6 +12,5 @@
 .tactical-evidence { scroll-margin-top: 24px; }
 .tactical-evidence:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
 @keyframes moment-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-@media(max-width:1100px) { .timed-moment { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 12px; box-shadow: none; } }
 @media(max-width:560px) { .timed-moment { padding: 12px; }.timed-moment h3 { font-size: 15px; }.moment-cue-footer { align-items: start; }.moment-inspect { width: 100%; } }
 @media(prefers-reduced-motion:reduce) { .timed-moment { animation: none; } }

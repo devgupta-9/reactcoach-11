@@ -53,3 +53,9 @@ Publication, deployment, video and final submission are separate later steps.
   final-snapshot gating as required. A follow-up source review found repeated
   inspection and closing/dismissal focus issues. Both were corrected and are
   covered by the passing focus regression. Independent visual review is pending.
+- Screenshot review caught clipping at 1024px/390px and covered markers at
+  desktop width. The root cause was a global `.pitch-stage` collision with the
+  existing 3D Studio. A dedicated Match Center wrapper and an in-flow cue below
+  the map preserve all interactive markers. Fresh lint/typecheck/build and all
+  eight cue checks pass, including cue containment, no map overlap and complete
+  Inspect-button visibility at all three widths. Screenshot re-review is pending.

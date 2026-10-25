@@ -50,6 +50,13 @@ test("the timed cue waits for its source and verified snapshot without duplicate
     for (const width of [1440, 1024, 390]) {
       await page.setViewportSize({ width, height: 1000 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+      const cueBox = (await page.locator(".timed-moment").boundingBox())!;
+      const pitchBox = (await page.locator(".match-pitch-stage .pitch").boundingBox())!;
+      const stageBox = (await page.locator(".match-pitch-stage").boundingBox())!;
+      expect(cueBox.y).toBeGreaterThanOrEqual(pitchBox.y + pitchBox.height);
+      expect(cueBox.y + cueBox.height).toBeLessThanOrEqual(stageBox.y + stageBox.height + 1);
+      const inspect = page.locator(".timed-moment").getByRole("button", { name: "Inspect this moment" });
+      await inspect.scrollIntoViewIfNeeded(); await expect(inspect).toBeInViewport({ ratio: 1 });
       await page.locator(".pitch-panel").screenshot({ path: testInfo.outputPath(`moment-${width}.png`) });
     }
   } finally { release(); }
