@@ -1,6 +1,7 @@
 :root { color-scheme: dark; --bg: #10140f; --surface: #191f19; --edge: #323c30; --ink: #eff1e7; --muted: #b0b9a6; --cyan: #83d6cf; --lime: #c9ee99; --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* Keep anchor destinations aligned when asynchronous scenario content expands. */
+html { scroll-behavior: auto; }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; overflow-x: clip; }
 button, input, select { font: inherit; } button, a { -webkit-tap-highlight-color: transparent; } button { color: inherit; } a { color: inherit; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }

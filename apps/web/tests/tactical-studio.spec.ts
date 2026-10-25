@@ -153,3 +153,31 @@ test("match event selection and navigation remain connected to the replay", asyn
   await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Tactical Studio", exact: true }).click();
   await expect(page).toHaveURL(/#studio$/);
 });
+
+test("navigation stays aligned when delayed studio evidence expands the page", async ({ page }) => {
+  let release!: () => void;
+  let ready!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const responseReady = new Promise<void>(resolve => { ready = resolve; });
+  await page.route("**/api/v1/matches/demo/insights/*", async route => {
+    const response = await route.fetch();
+    ready();
+    await gate;
+    await route.fulfill({ response });
+  });
+  try {
+    await page.goto("/");
+    await page.getByRole("spinbutton", { name: "Start at second" }).fill("420");
+    await page.getByRole("button", { name: "Seek replay", exact: true }).click();
+    await expect(page.locator(".timeline-item")).toHaveCount(23);
+    await responseReady;
+    await page.locator('.timeline-item[data-event-id="9"]').click();
+    await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Decision Lab", exact: true }).click();
+    release();
+    await expect(page.locator(".tactical-studio .trace-player")).toBeVisible();
+    await expect(page).toHaveURL(/#decision-lab$/);
+    await expect(page.locator(".rx-lab")).toBeInViewport();
+  } finally {
+    release();
+  }
+});
