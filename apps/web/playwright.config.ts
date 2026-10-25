@@ -8,8 +8,9 @@ if (deployedUrl && !process.env.PLAYWRIGHT_API_URL) {
 
 export default defineConfig({
   testDir: "./tests",
-  timeout: 45_000,
-  expect: { timeout: 5_000 },
+  // Hosted checks include network latency and the documented scale-to-zero start.
+  timeout: deployedUrl ? 75_000 : 45_000,
+  expect: { timeout: deployedUrl ? 20_000 : 5_000 },
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: 2,

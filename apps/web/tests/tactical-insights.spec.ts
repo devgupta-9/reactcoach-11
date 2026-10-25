@@ -4,6 +4,8 @@ test("two different live insights follow their triggering events", async ({ page
   await page.goto("/");
   const cards = page.locator(".tactical-card");
   await expect(cards).toHaveCount(0);
+  // Measure event pacing after connection, independently of initial data loading.
+  await expect(page.locator(".score-center small")).toContainText("LIVE REPLAY");
   await expect(cards).toHaveCount(1, { timeout: 15_000 });
   await expect(cards.first()).toHaveAttribute("data-event-id", "9");
   await expect(page.locator('.timeline-item[data-event-id="9"]')).toBeVisible();
