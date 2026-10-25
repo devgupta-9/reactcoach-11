@@ -1,4 +1,16 @@
-//! Agent workflow contracts only. Microsoft Foundry calls are NOT implemented yet.
+//! Evidence-grounded coaching. Paid generation is an explicit, optional backend job.
+pub mod contracts;
+pub mod evidence;
+#[cfg(feature = "foundry")]
+pub mod provider;
+pub mod workflow;
+
+#[cfg(test)]
+mod tests;
+
+pub const EMBEDDED_ARTIFACT: &str = include_str!("../fixtures/foundry-demo-v1.json");
+
+// Legacy planning vocabulary retained for compatibility; workflow contains the active pipeline.
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -39,7 +51,7 @@ pub fn planned_workflow() -> Vec<AgentStep> {
 }
 
 #[cfg(test)]
-mod tests {
+mod legacy_tests {
     use super::*;
     #[test]
     fn validator_is_final_step() {

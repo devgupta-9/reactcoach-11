@@ -1,0 +1,268 @@
+{
+  "schema_version": "foundry_coaching_artifact_v1",
+  "prompt_version": "evidence_composition_v1",
+  "deployment": "reactcoach-coach",
+  "generated_at_unix_seconds": 1792936431,
+  "entries": [
+    {
+      "insight_id": "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:turnover-wide-001",
+      "evidence_digest": "57e321777a6077cb925c9094ad0c2449344244a7f6743840d2fa7ee142a0ea38",
+      "outcome": {
+        "status": "generated",
+        "interpretation": {
+          "focus": "possession",
+          "fact_ids": [
+            "observed",
+            "authored",
+            "defender",
+            "baseline",
+            "correction",
+            "objective",
+            "support",
+            "limits"
+          ]
+        },
+        "challenge": {
+          "verdict": "accept",
+          "reason": "supported",
+          "fact_ids": [
+            "observed",
+            "authored",
+            "defender",
+            "baseline",
+            "correction",
+            "objective",
+            "support",
+            "limits"
+          ]
+        },
+        "narration": {
+          "fan": [
+            {
+              "fact_id": "observed",
+              "wording": 0
+            },
+            {
+              "fact_id": "authored",
+              "wording": 0
+            },
+            {
+              "fact_id": "defender",
+              "wording": 0
+            },
+            {
+              "fact_id": "baseline",
+              "wording": 0
+            },
+            {
+              "fact_id": "correction",
+              "wording": 0
+            },
+            {
+              "fact_id": "objective",
+              "wording": 0
+            },
+            {
+              "fact_id": "support",
+              "wording": 0
+            },
+            {
+              "fact_id": "limits",
+              "wording": 0
+            }
+          ],
+          "analyst": [
+            {
+              "fact_id": "observed",
+              "wording": 1
+            },
+            {
+              "fact_id": "authored",
+              "wording": 1
+            },
+            {
+              "fact_id": "defender",
+              "wording": 1
+            },
+            {
+              "fact_id": "baseline",
+              "wording": 1
+            },
+            {
+              "fact_id": "correction",
+              "wording": 1
+            },
+            {
+              "fact_id": "objective",
+              "wording": 0
+            },
+            {
+              "fact_id": "support",
+              "wording": 0
+            },
+            {
+              "fact_id": "limits",
+              "wording": 0
+            }
+          ]
+        },
+        "receipts": [
+          {
+            "role": "interpreter",
+            "response_id": "resp_0bc9cfa742788ec5016ade09aeb4f88193a6f40a5384983d62",
+            "model": "reactcoach-coach",
+            "input_tokens": 1516,
+            "output_tokens": 55,
+            "total_tokens": 1571
+          },
+          {
+            "role": "challenger",
+            "response_id": "resp_03e4011b2a3a81fb016ade09b04b4c8195bce6763210800663",
+            "model": "reactcoach-coach",
+            "input_tokens": 1576,
+            "output_tokens": 60,
+            "total_tokens": 1636
+          },
+          {
+            "role": "narrator",
+            "response_id": "resp_0c7b3559814584a2016ade09b1cc2c81969ae653e567534ece",
+            "model": "reactcoach-coach",
+            "input_tokens": 1689,
+            "output_tokens": 204,
+            "total_tokens": 1893
+          }
+        ]
+      }
+    },
+    {
+      "insight_id": "demo-match-001:fictional_replay_v2:tactical_intelligence_v1:pressure-forward-001",
+      "evidence_digest": "4bac44e562b8e8944d8058e480988a32eaf9758623a8467db8126e2fa58418b9",
+      "outcome": {
+        "status": "generated",
+        "interpretation": {
+          "focus": "possession",
+          "fact_ids": [
+            "observed",
+            "authored",
+            "defender",
+            "baseline",
+            "correction",
+            "objective",
+            "support",
+            "limits"
+          ]
+        },
+        "challenge": {
+          "verdict": "accept",
+          "reason": "supported",
+          "fact_ids": [
+            "observed",
+            "authored",
+            "defender",
+            "baseline",
+            "correction",
+            "objective",
+            "support",
+            "limits"
+          ]
+        },
+        "narration": {
+          "fan": [
+            {
+              "fact_id": "observed",
+              "wording": 1
+            },
+            {
+              "fact_id": "authored",
+              "wording": 1
+            },
+            {
+              "fact_id": "defender",
+              "wording": 1
+            },
+            {
+              "fact_id": "baseline",
+              "wording": 1
+            },
+            {
+              "fact_id": "correction",
+              "wording": 1
+            },
+            {
+              "fact_id": "objective",
+              "wording": 1
+            },
+            {
+              "fact_id": "support",
+              "wording": 1
+            },
+            {
+              "fact_id": "limits",
+              "wording": 1
+            }
+          ],
+          "analyst": [
+            {
+              "fact_id": "observed",
+              "wording": 0
+            },
+            {
+              "fact_id": "authored",
+              "wording": 0
+            },
+            {
+              "fact_id": "defender",
+              "wording": 0
+            },
+            {
+              "fact_id": "baseline",
+              "wording": 0
+            },
+            {
+              "fact_id": "correction",
+              "wording": 0
+            },
+            {
+              "fact_id": "objective",
+              "wording": 0
+            },
+            {
+              "fact_id": "support",
+              "wording": 0
+            },
+            {
+              "fact_id": "limits",
+              "wording": 0
+            }
+          ]
+        },
+        "receipts": [
+          {
+            "role": "interpreter",
+            "response_id": "resp_0484c380031bb19c016ade09e94a9481949902033a1ba451c2",
+            "model": "reactcoach-coach",
+            "input_tokens": 1501,
+            "output_tokens": 55,
+            "total_tokens": 1556
+          },
+          {
+            "role": "challenger",
+            "response_id": "resp_02109fbf971ecb91016ade09eb0b2c8197901799cc08a1d335",
+            "model": "reactcoach-coach",
+            "input_tokens": 1561,
+            "output_tokens": 60,
+            "total_tokens": 1621
+          },
+          {
+            "role": "narrator",
+            "response_id": "resp_05626dc066487ae3016ade09ecbbd881909e4de43662afa988",
+            "model": "reactcoach-coach",
+            "input_tokens": 1674,
+            "output_tokens": 204,
+            "total_tokens": 1878
+          }
+        ]
+      }
+    }
+  ]
+}
