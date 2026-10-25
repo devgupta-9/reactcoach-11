@@ -5,6 +5,7 @@ const lab = (page: Page) => page.locator(".rx-lab");
 
 async function setTrait(page: Page, label: string, value: number) {
   const slider = page.getByRole("slider", { name: label, exact: true });
+  await expect(slider).toBeEnabled();
   await slider.focus();
   await slider.press(value === 100 ? "End" : "Home");
   if (value !== 100) {
