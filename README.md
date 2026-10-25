@@ -52,7 +52,8 @@ See [the coaching contract](docs/FOUNDRY_COACHING_CONTRACT.md) and
 viewer. A final recap separates recorded goals, score and event counts from
 authored tactical alternatives and saved coaching. It waits for matching final
 snapshot evidence and supports recovery, seek/restart and keyboard navigation.
-The Phase 4 branch has not been published or deployed. See
+The Phase 4 branch is published in [PR #5](https://github.com/devgupta-9/reactcoach-11/pull/5);
+corrected CI and hosted acceptance are in progress. See
 [the verification record](docs/PHASE_4_MATCH_EXPERIENCE.md).
 
 **Not implemented:** real-player scouting data, continuous optimal opponent

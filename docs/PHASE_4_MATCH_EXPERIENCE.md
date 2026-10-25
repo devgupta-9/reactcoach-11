@@ -1,6 +1,6 @@
 # Phase 4 — timed tactical moments and match recap
 
-Status: Done locally, 2026-10-26; publication and hosted verification Pending. Baseline main:
+Status: Done locally, 2026-10-26; branch published, CI correction and hosted verification In Progress. Baseline main:
 `f5cee67453c99743fe60f8de1a5b0bf5ad3bbd42` (merged PR #4).
 Branch: `feat/phase-4-match-experience`.
 
@@ -77,6 +77,27 @@ Its 120-second lifetime follows the synthetic replay clock, not wall time.
 The recap is deterministic presentation of existing evidence; it does not generate
 new AI prose or make paid inference calls. Publication, remote CI and hosted
 Phase 4 acceptance have not been performed in this increment.
+
+## Publication and CI correction — 2026-10-26
+
+- Branch pushed at `e31b2fa4b1828237aa2fc3106b0bda89d77beb19`.
+  [PR #5](https://github.com/devgupta-9/reactcoach-11/pull/5) targets `main` and remains unmerged.
+- [Initial push CI](https://github.com/devgupta-9/reactcoach-11/actions/runs/40226128846)
+  passed Rust, infrastructure guards/templates, lint, typecheck and production build.
+  Playwright reported 67 passed, 1 failed: the mobile cue containment assertion
+  measured its entrance transform before the 200 ms animation finished. The
+  visible cue bottom exceeded its natural parent bottom by approximately 1.575 px,
+  beyond the unchanged 1 px measurement allowance.
+- A one-second test-only entrance reproduced the failure on both desktop and
+  mobile. The test now awaits the actual finite Web Animations `finished`
+  promises, then samples all three rectangles in one browser evaluation.
+  Both focused checks pass. Source timing, containment tolerance, overlap,
+  viewport and overflow assertions are preserved; no production CSS changed.
+- An independent Codex helper reviewed this diagnosis read-only and agreed that
+  the evidence identifies an animation-sampling race. The corrected full local
+  suite passed 68 tests, 0 failed/skipped (2.4 minutes); lint and typecheck passed.
+  Corrected remote CI and hosted verification remain pending. No Azure rollout
+  has occurred.
 
 ## Historical verified increments — 2026-10-25
 

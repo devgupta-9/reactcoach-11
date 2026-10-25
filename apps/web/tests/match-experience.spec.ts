@@ -47,6 +47,8 @@ test("the timed cue waits for its source and verified snapshot without duplicate
     await expect(page.locator(`.timeline-item[data-event-id="${trigger}"]`)).toBeVisible();
     await expect(page.locator(".tactical-card")).toHaveCount(1);
     await expect(page.locator(".timed-moment")).toHaveCount(0);
+    // A slow entrance makes premature geometry sampling fail deterministically.
+    await page.addStyleTag({ content: ".timed-moment { animation-duration: 1s; }" });
     release();
     await expect(page.locator(".timed-moment")).toHaveAttribute("data-source-event-id", String(trigger));
     await expect(page.locator(".timed-moment")).toHaveAttribute("data-insight-id", moment.insight_id);
@@ -56,9 +58,14 @@ test("the timed cue waits for its source and verified snapshot without duplicate
     for (const width of [1440, 1024, 390]) {
       await page.setViewportSize({ width, height: 1000 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-      const cueBox = (await page.locator(".timed-moment").boundingBox())!;
-      const pitchBox = (await page.locator(".match-pitch-stage .pitch").boundingBox())!;
-      const stageBox = (await page.locator(".match-pitch-stage").boundingBox())!;
+      await page.locator(".timed-moment").evaluate(async cue => {
+        await Promise.all(cue.getAnimations().map(animation => animation.finished));
+      });
+      const [cueBox, pitchBox, stageBox] = await page.locator(".match-pitch-stage").evaluate(stage =>
+        [stage.querySelector(".timed-moment")!, stage.querySelector(".pitch")!, stage].map(element => {
+          const { y, height } = element.getBoundingClientRect();
+          return { y, height };
+        }));
       expect(cueBox.y).toBeGreaterThanOrEqual(pitchBox.y + pitchBox.height);
       expect(cueBox.y + cueBox.height).toBeLessThanOrEqual(stageBox.y + stageBox.height + 1);
       const inspect = page.locator(".timed-moment").getByRole("button", { name: "Inspect this moment" });

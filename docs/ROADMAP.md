@@ -20,7 +20,7 @@ The coaching simulator is a differentiator *inside* the match-intelligence pipel
 | 2A. Spatial simulation | Completed | **DONE** | Phase 2A PR #2 merged; 61 Rust tests and 14 browser checks reported; post-merge main CI green |
 | **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE; merged into main** | 81 original Rust tests; 23 events / 2 moments verified on Azure; historical final Agy review blocked |
 | 3. Microsoft Foundry intelligence | Oct 13–17 | DONE; merged and deployed | Two real validated compositions; 104 all-feature Rust tests, 44 hosted browser and 18 public smoke checks pass |
-| 4. Broadcast & audience experience | Oct 17–21 | DONE locally; publication PENDING | Timed tactical cues and source-grounded recap; 104 Rust tests and 68 desktop/mobile browser checks pass; hosted Phase 4 acceptance pending |
+| 4. Broadcast & audience experience | Oct 17–21 | DONE locally; published; CI correction IN PROGRESS | PR #5; 104 Rust tests and 68 local browser checks; animation-sampling CI regression corrected, rerun and hosted acceptance pending |
 | 5. Azure deployment & QA | Oct 21–24 | IN PROGRESS | Foundry-integrated public HTTPS demo and GitHub CI pass; release automation and retained monitoring remain pending |
 | 6. Demo & submission | Oct 24–26 | PENDING | Public repo/demo, sub-two-minute video, valid platform submission |
 
@@ -80,7 +80,7 @@ and [Phase 3 verification](PHASE_3_VERIFICATION.md).
 - [x] Evidence-backed original versus corrected spatial replay (Tactical Studio verified on Azure)
 - [x] Genuine verified Foundry explanation and deterministic fallback (two real compositions served by Azure)
 - [x] Fan and Analyst explanation modes grounded in identical facts (deployed; reused by the locally verified Phase 4 evidence viewer)
-- [x] Timed tactical cue and match recap (locally verified; Phase 4 publication and hosted acceptance Pending)
+- [x] Timed tactical cue and match recap (locally verified; PR #5 published, corrected CI and hosted acceptance In Progress)
 - [x] Public tested Azure demo (Phase 3: 44 desktop/mobile browser checks; 18 endpoint/SSE checks, October 25)
 - [ ] Public repo, demo video under two minutes, project description and platform submission
 
