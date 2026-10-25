@@ -28,3 +28,16 @@ export function timedMoment(insights: TacticalInsight[], events: MatchEvent[], s
   const moment = availableMoments(insights, events, snapshot).at(-1);
   return moment && snapshot && snapshot.elapsed_seconds - moment.event_timestamp < MOMENT_WINDOW_SECONDS ? moment : null;
 }
+
+export function finalSnapshotReady(snapshot: MatchSnapshot | null, events: MatchEvent[], complete: boolean): snapshot is MatchSnapshot {
+  const end = events.at(-1);
+  return Boolean(complete && snapshot && end
+    && snapshot.latest_event?.id === end.id && snapshot.latest_event.kind === end.kind
+    && snapshot.latest_event.timestamp_seconds === end.timestamp_seconds
+    && (snapshot.latest_event.match_id === undefined || snapshot.latest_event.match_id === snapshot.match_id)
+    && snapshot.elapsed_seconds === end.timestamp_seconds
+    && snapshot.events_processed === events.length
+    && new Set(events.map(event => event.id)).size === events.length
+    && events.every(event => event.timestamp_seconds <= end.timestamp_seconds
+      && (event.match_id === undefined || event.match_id === snapshot.match_id)));
+}

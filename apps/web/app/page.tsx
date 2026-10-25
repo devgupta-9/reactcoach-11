@@ -3,7 +3,7 @@
 import DecisionLab from "./decision-lab";
 import TacticalInsights from "./tactical-insights";
 import TacticalStudio from "./tactical-studio";
-import { TimedTacticalMoment } from "./match-broadcast";
+import { MatchRecap, TimedTacticalMoment } from "./match-broadcast";
 import { useRef, useState } from "react";
 import { evidenceButtonId } from "./match-presentation";
 import { timecode, type EventKind } from "./match-contracts";
@@ -18,6 +18,7 @@ export default function HomePage() {
   const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
   const [focusRevision, setFocusRevision] = useState(0);
   const inspectionTrigger = useRef<HTMLElement | null>(null);
+  const replayControls = useRef<HTMLDivElement>(null);
   const { snapshot, events, insights, status, error } = useMatchReplay(replay);
   const stats = snapshot?.statistics;
   const latest = events.find(event => event.id === selectedEvent) ?? snapshot?.latest_event;
@@ -32,6 +33,10 @@ export default function HomePage() {
     setSelectedInsight(id);
     const source = insights.find(insight => insight.insight_id === id)?.source_event_ids.at(-1);
     if (source !== undefined) setSelectedEvent(source);
+  }
+  function seekReplay(at: number) {
+    setSelectedEvent(null); setSelectedInsight(null); setSeek(at);
+    setReplay(previous => ({ at, generation: previous.generation + 1 }));
   }
   return (
     <main className="shell">
@@ -56,15 +61,16 @@ export default function HomePage() {
           <div className="team away"><div><small>AWAY / FICTIONAL</small><strong>South United</strong></div><span className="team-crest away-crest">S<span>U</span></span></div>
         </section>
 
-        <div className="replay-controls" aria-label="Replay controls">
-          <button type="button" aria-label="Restart replay" onClick={() => { setSelectedEvent(null); setSelectedInsight(null); setSeek(0); setReplay(previous => ({ at: 0, generation: previous.generation + 1 })); }}>↺ Restart replay</button>
+        <div ref={replayControls} tabIndex={-1} role="group" className="replay-controls" aria-label="Replay controls">
+          <button type="button" aria-label="Restart replay" onClick={() => seekReplay(0)}>↺ Restart replay</button>
           <label>Start at second <input type="number" min="0" max="420" step="1" value={seek} onChange={event => setSeek(Number(event.target.value))} /></label>
-          <button type="button" disabled={!Number.isInteger(seek) || seek < 0 || seek > 420} onClick={() => { setSelectedEvent(null); setSelectedInsight(null); setReplay(previous => ({ at: seek, generation: previous.generation + 1 })); }}>Seek replay</button>
+          <button type="button" disabled={!Number.isInteger(seek) || seek < 0 || seek > 420} onClick={() => seekReplay(seek)}>Seek replay</button>
+          {status === "replay complete" && <a className="recap-jump" href="#match-recap">View match recap ↓</a>}
           <span className="replay-note">Accelerated playback · 23 authored events</span>
         </div>
         {error && <div className="error" role="alert">Match replay: {error}.</div>}
 
-        <TacticalInsights key={replay.generation} insights={insights} selected={selectedInsight} focusRevision={focusRevision} onSelect={inspectMoment} />
+        <TacticalInsights key={`insights:${replay.generation}`} insights={insights} selected={selectedInsight} focusRevision={focusRevision} onSelect={inspectMoment} />
 
         <section className="content-grid">
           <div className="panel pitch-panel">
@@ -73,7 +79,7 @@ export default function HomePage() {
               <div className="midline" /><div className="centercircle" /><div className="box-left" /><div className="box-right" />
               {events.map(event => <button type="button" key={event.id} className={`pitch-dot ${event.team} ${event.kind === "goal" ? "goal" : ""}`} aria-label={`Event ${event.id}: ${event.player}, ${label(event.kind)} at ${timecode(event.timestamp_seconds)}`} aria-pressed={latest?.id === event.id} onClick={() => setSelectedEvent(event.id)} style={{ left: `${event.position.x}%`, top: `${event.position.y}%` }} />)}
             </div>
-              <TimedTacticalMoment key={replay.generation} insights={insights} events={events} snapshot={snapshot}
+              <TimedTacticalMoment key={`moment:${replay.generation}`} insights={insights} events={events} snapshot={snapshot}
                 complete={status === "replay complete"} startAt={replay.at} unavailable={Boolean(error)} onInspect={inspectMoment} />
             </div>
             <div className="legend"><span><i className="legend-home" /> North City</span><span><i className="legend-away" /> South United</span><span>Select a dot to inspect the event</span></div>
@@ -96,6 +102,9 @@ export default function HomePage() {
             {events.length === 0 && <div className="timeline-empty">Waiting for the first synthetic event...</div>}
           </div>
         </section>
+        <MatchRecap key={`recap:${replay.generation}`} snapshot={snapshot} events={events} insights={insights}
+          complete={status === "replay complete"} unavailable={Boolean(error)} onInspect={inspectMoment}
+          onReload={() => { seekReplay(events.at(-1)?.timestamp_seconds ?? replay.at); replayControls.current?.focus(); }} />
       </section>
 
       <div id="decision-lab" className="decision-lab-anchor"><DecisionLab /></div>

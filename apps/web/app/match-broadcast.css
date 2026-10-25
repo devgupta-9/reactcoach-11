@@ -11,6 +11,28 @@
 .moment-inspect { display: inline-flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 44px; padding: 10px 14px; border: 1px solid #68835a; border-radius: 5px; background: #293b21; color: #e1f0d1; font-size: 11px; cursor: pointer; }
 .tactical-evidence { scroll-margin-top: 24px; }
 .tactical-evidence:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+.replay-controls:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
 @keyframes moment-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 @media(max-width:560px) { .timed-moment { padding: 12px; }.timed-moment h3 { font-size: 15px; }.moment-cue-footer { align-items: start; }.moment-inspect { width: 100%; } }
 @media(prefers-reduced-motion:reduce) { .timed-moment { animation: none; } }
+.match-recap { margin-top: 24px; scroll-margin-top: 24px; }
+.match-recap h2 { margin: 8px 0; font-size: 28px; letter-spacing: -.035em; font-weight: 600; }
+.match-recap p { color: var(--muted); font-size: 12px; line-height: 1.75; }
+.recap-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.recap-result { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; margin: 24px 0; padding: 24px; border: 1px solid #4b6040; border-radius: 8px; background: #1c281b; }
+.recap-result > span { font-size: 19px; font-weight: 550; }.recap-result > span:last-child { text-align: right; }
+.recap-result small { display: block; margin-top: 8px; color: var(--muted); font: 9px var(--mono); letter-spacing: .06em; }
+.recap-score { font-size: 48px; font-weight: 550; white-space: nowrap; font-variant-numeric: tabular-nums; }.recap-score span { color: var(--muted); font-weight: 300; }
+.recap-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 32px; }
+.recap-grid > div { min-width: 0; }.recap-grid h3 { font-size: 17px; margin: 0 0 10px; font-weight: 550; }.recap-grid h4 { font-size: 14px; font-weight: 550; }
+.recap-records dl { margin: 20px 0 28px; }.recap-records dl > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; border-top: 1px solid var(--edge); padding: 16px 0; font-size: 12px; }
+.recap-records dt { color: var(--muted); }.recap-records dd { margin: 0; font-variant-numeric: tabular-nums; }.recap-records dd span { color: var(--muted); padding: 0 8px; }
+.recap-goals { padding: 0; list-style: none; }.recap-goals li { display: flex; align-items: start; gap: 16px; margin: 16px 0; }.recap-goals time { color: var(--lime); font: 11px var(--mono); padding-top: 3px; }
+.recap-goals strong { display: block; font-size: 13px; font-weight: 550; }.recap-goals span, .recap-observation-note { display: block; color: var(--muted); font-size: 11px; line-height: 1.7; margin-top: 6px; }
+.recap-moment { margin: 16px 0; padding: 20px; border: 1px solid var(--edge); border-radius: 8px; background: #151e15; overflow-wrap: anywhere; }
+.recap-moment > time { color: var(--cyan); font: 11px var(--mono); }.recap-moment h4 { font-size: 16px; line-height: 1.5; margin: 10px 0; }
+.recap-moment > small { display: block; font-size: 10px; color: var(--muted); line-height: 1.7; margin: 16px 0; }.recap-moment strong { color: var(--ink); font-weight: 550; }
+.recap-provenance { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--edge); }.recap-provenance summary { min-height: 44px; cursor: pointer; font-size: 12px; }
+.recap-source-links { display: flex; gap: 12px 24px; flex-wrap: wrap; }.recap-source-links a, .recap-jump { color: var(--lime); font-size: 11px; min-height: 44px; display: inline-flex; align-items: center; }
+@media(max-width:850px) { .recap-grid { grid-template-columns: 1fr; gap: 24px; } }
+@media(max-width:560px) { .match-recap h2 { font-size: 24px; }.recap-result { padding: 18px 12px; gap: 12px; }.recap-result > span { font-size: 12px; }.recap-result small { font-size: 8px; letter-spacing: 0; }.recap-score { font-size: 34px; }.recap-moment { padding: 16px; }.recap-moment .moment-inspect { width: 100%; } }
