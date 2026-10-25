@@ -19,9 +19,9 @@ The coaching simulator is a differentiator *inside* the match-intelligence pipel
 | 1. Foundation | Completed | **DONE** | Phase 1 PR #1 merged; Rust/API/Next.js/replay/CI baseline |
 | 2A. Spatial simulation | Completed | **DONE** | Phase 2A PR #2 merged; 61 Rust tests and 14 browser checks reported; post-merge main CI green |
 | **2B. Live synthetic match intelligence** | **Oct 10–13** | **DONE locally** | 81 Rust / 24 browser tests pass; final Agy review blocked; owner acceptance and publication pending |
-| 3. Microsoft Foundry intelligence | Oct 13–17 | PENDING | Real inference; versioned grounded narratives; evidence validator; outage fallback |
+| 3. Microsoft Foundry intelligence | Oct 13–17 | IN PROGRESS | One real inference smoke passed October 25; application narratives, validator and fallback remain pending |
 | 4. Broadcast & audience experience | Oct 17–21 | PENDING | Synchronized overlays, real trace playback, two audience views, recap, mobile |
-| 5. Azure deployment & QA | Oct 21–24 | PENDING | Public HTTPS demo; approved cost/credentials; CI/E2E/security/observability |
+| 5. Azure deployment & QA | Oct 21–24 | IN PROGRESS | Docker/Bicep and guarded release prepared; public HTTPS endpoints and deployed E2E acceptance still required |
 | 6. Demo & submission | Oct 24–26 | PENDING | Public repo/demo, sub-two-minute video, valid platform submission |
 
 The dates overlap deliberately to allow early Cloud/Foundry access checks and interface integration. They are internal targets, not delivery guarantees.
@@ -52,11 +52,18 @@ checks pass. This is a slice of Phase 4, not completion of broadcast overlays,
 Fan/Analyst modes or recap. The approved target dates remain unchanged.
 See [Tactical Studio UI](TACTICAL_STUDIO_UI.md).
 
-- [ ] Verify Microsoft Foundry account, deployment regions, available models, costs and quotas.
-- [ ] Obtain explicit owner approval *before* provisioning paid Azure resources.
+- [x] Verify Microsoft Foundry account, deployment regions, available models, costs and quotas (East US 2; gpt-5-mini deployment; one 30-token Responses test on October 25).
+- [x] Obtain explicit owner approval *before* provisioning paid Azure resources (owner requested starting Azure deployment on October 25, after pay-as-you-go and zero active credits were established).
 - [ ] Prepare mock and real-model evidence-validation test plans without exposing browser credentials.
 - [x] Choose two end-to-end demo scenarios and evidence fixtures early (turnover and pressure).
 - [ ] Have Agy prepare interface review after backend event/insight contracts are stable, without overlapping file edits.
+
+**Release increment, 2026-10-25:** `feat/azure-release-prep` preserves the local
+Phase 2B/UI history. Linux container packaging, a Consumption-only Azure topology,
+explicit subscription/tenant guards, deployed-browser test configuration and a
+Next.js security patch are prepared. Real Foundry HTTP 200/`READY` verifies model
+access only; the app's coaching agent workflow and full audience modes remain
+unfinished. See [release scope, costs and acceptance](AZURE_DEPLOYMENT.md).
 
 ## Submission readiness
 

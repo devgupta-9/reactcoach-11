@@ -37,7 +37,20 @@ evidence. See [the API contract](docs/SPATIAL_SIMULATION_CONTRACT.md) and
 Authored scenario geometry is hypothetical and is never described as recovered
 tracking data. Recommendations remain nullable when no improvement is supported.
 
-**Not implemented:** real-player scouting data, continuous optimal opponent simulation, Microsoft Foundry model calls, realistic ball physics, calibrated outcome predictions or Azure deployment.
+**Not implemented:** real-player scouting data, continuous optimal opponent simulation,
+evidence-validated Foundry coaching in the application, realistic ball physics or
+calibrated outcome predictions. A separate, bounded Foundry connection test passed
+on October 25; it does not complete the AI coaching workflow.
+
+## Azure release
+
+Container packaging, Consumption Container Apps templates and a guarded deployment
+script are available. The web image embeds its public API URL at build time;
+registry pulls use managed identity rather than passwords. Deployment and public
+browser verification are tracked in [Azure deployment](docs/AZURE_DEPLOYMENT.md).
+Run `powershell -NoProfile -File scripts/deploy-azure.ps1` to inspect the plan
+without contacting Azure. Paid deployment requires explicit `-Apply`, subscription
+and tenant arguments. The original simulation and Tactical Studio remain unchanged.
 
 ## Interactive Tactical Studio
 

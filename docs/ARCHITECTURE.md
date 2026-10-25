@@ -158,3 +158,22 @@ See [UI contracts and verification](TACTICAL_STUDIO_UI.md).
 - Never commit model/API credentials. `.env.example` contains placeholders only.
 - CORS is not an authentication boundary. All demo endpoints currently use public synthetic data.
 - This is a foundation prototype, not a deployed production sports feed.
+
+## Azure release packaging
+
+The deployment increment preserves the separate Rust API and Next.js frontend.
+Multi-stage Dockerfiles produce non-root Linux runtimes. Next.js standalone output
+is enabled only for container builds, and `NEXT_PUBLIC_API_URL` is embedded during
+that build rather than treated as a runtime secret. Existing local setup remains valid.
+
+`infrastructure/azure/bootstrap.bicep` defines a private Basic ACR, registry-scoped
+pull identity and Consumption-only Container Apps environment. `apps.bicep` defines
+two public HTTPS apps, exact web-origin API CORS, HTTP probes, 0 minimum / 1 maximum
+replica, 0.25 CPU and 0.5 GiB per app. No database or Log Analytics dependency is added.
+The release script defaults to a non-deploying plan, requires explicit personal
+subscription and expected tenant IDs for writes, rejects unowned existing groups
+and dirty checkouts, and records immutable revision/time image tags for rollback.
+
+One Entra-authenticated Foundry Responses smoke request succeeded on October 25.
+The applications still do not call Foundry; model access and app integration are
+separate acceptance gates. See [Azure deployment](AZURE_DEPLOYMENT.md).

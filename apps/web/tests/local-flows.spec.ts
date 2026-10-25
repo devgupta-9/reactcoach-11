@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const api = "http://localhost:8080/api/v1";
+const api = `${process.env.PLAYWRIGHT_API_URL ?? "http://localhost:8080"}/api/v1`;
 const lab = (page: Page) => page.locator(".rx-lab");
 
 async function setTrait(page: Page, label: string, value: number) {

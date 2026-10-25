@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { InsightDetail, TacticalInsight } from "../app/match-contracts";
 
-const base = "http://localhost:8080/api/v1/matches/demo";
+const base = `${process.env.PLAYWRIGHT_API_URL ?? "http://localhost:8080"}/api/v1/matches/demo`;
 
 test("both decision branches display the exact Rust states and identical starting coordinates", async ({ page, request }) => {
   const insights = await (await request.get(`${base}/insights`)).json() as TacticalInsight[];

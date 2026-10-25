@@ -1,6 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "node:path";
 
+const deployedUrl = process.env.PLAYWRIGHT_BASE_URL;
+if (deployedUrl && !process.env.PLAYWRIGHT_API_URL) {
+  throw new Error("Deployed browser tests require PLAYWRIGHT_API_URL as well as PLAYWRIGHT_BASE_URL.");
+}
+
 export default defineConfig({
   testDir: "./tests",
   timeout: 45_000,
@@ -10,7 +15,7 @@ export default defineConfig({
   workers: 2,
   reporter: "list",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: deployedUrl ?? "http://localhost:3000",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
@@ -18,7 +23,7 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  webServer: [
+  webServer: deployedUrl ? undefined : [
     {
       command: process.platform === "win32"
         ? "powershell -NoProfile -File scripts/cargo.ps1 run -p reactcoach-api --locked"

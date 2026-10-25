@@ -76,7 +76,7 @@ test("seeking restores only available insights and evidence errors recover", asy
 });
 
 test("repeated transport records neither duplicate insights nor regress the replay clock", async ({ page, request }) => {
-  const base = "http://localhost:8080/api/v1/matches/demo";
+  const base = `${process.env.PLAYWRIGHT_API_URL ?? "http://localhost:8080"}/api/v1/matches/demo`;
   const events = await (await request.get(`${base}/events`)).json();
   const insights = await (await request.get(`${base}/insights`)).json();
   const frame = (name: string, data: unknown) => `event: ${name}\ndata: ${JSON.stringify(data)}\n\n`;
