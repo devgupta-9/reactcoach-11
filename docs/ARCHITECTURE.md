@@ -157,7 +157,7 @@ does not indicate current provider availability. SHA-256 binds content; it is no
 cryptographic proof of provider authorship.
 
 The release includes two source-bound explanations from six completed real Foundry
-role calls on October 25. No Phase 3 deployment is claimed. See
+role calls on October 25, now served by the verified public Azure demo. See
 [contracts and administrative commands](FOUNDRY_COACHING_CONTRACT.md) and
 [verification status](PHASE_3_VERIFICATION.md).
 

@@ -1,8 +1,8 @@
 # Phase 3: evidence-grounded Foundry coaching
 
-Status: local implementation with two validated real Foundry compositions,
+Status: implemented and deployed with two validated real Foundry compositions,
 2026-10-25. The authoritative scope remains HACKATHON_EXECUTION_PLAN.md.
-No Phase 3 deployment is claimed by this contract.
+Publication and hosted acceptance are recorded in PHASE_3_VERIFICATION.md.
 
 ## Boundary and workflow
 

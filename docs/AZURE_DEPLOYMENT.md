@@ -216,6 +216,70 @@ exceed INR 300; alerts are not spending caps. No independent Agy sign-off, curre
 feature-branch GitHub CI result, push, merge or platform submission is claimed.
 The application still makes no Foundry coaching calls.
 
+## Phase 3 published release — 2026-10-25
+
+The owner explicitly authorized publishing and deploying the verified Phase 3
+build. Branch `feat/phase-3-foundry-intelligence` was pushed at application commit
+`4080f3e866a3cdf8082ccfc201c8e69c896edc2e`. The branch also contains the previously
+unpublished match intelligence, Tactical Studio and deployment packaging history;
+it was 18 commits ahead of main and zero behind. Main was not merged or changed.
+
+[Source CI run 40201083100](https://github.com/devgupta-9/reactcoach-11/actions/runs/40201083100)
+passed all infrastructure, Rust and web/browser jobs. The source passed 104
+all-feature Rust tests and 44 browser checks; local default-feature verification
+also passed 98 tests. Production dependency audit found zero vulnerabilities.
+Documentation-only publication commits retain the same deployed application
+source; their latest checks are available in the branch's GitHub Actions history.
+
+Two uniquely tagged Linux images were built in the existing ACR:
+
+| App | Image tag | Verified digest | ACR run | Ready revision |
+| --- | --- | --- | --- | --- |
+| API | `4080f3e866a3-20261025142545` | `sha256:47df23e1691a10350feb0f8379637e2a03c2e17d7ff8cff775ed1b076f65d4bc` | `ch5` Succeeded | `reactcoach-demo-api--0000001` |
+| Web | `4080f3e866a3-20261025142545` | `sha256:4467f4ee8822af6882be074b59c0f287a260a4c2ccc0263d42053c974b174fe9` | `ch4` Succeeded | `reactcoach-demo-web--0000002` |
+
+Both repositories are under `rclgz67wzypxwhw.azurecr.io/reactcoach/`.
+Deployment `reactcoach-phase3-4080f3e866a3` succeeded using the existing
+`apps.bicep` template in incremental mode, after live validation and What-If
+inspection. Only the two existing apps were redeployed. The bootstrap template,
+provider registration and role assignments were not reapplied. The resource group,
+registry, environment and pull identity are unchanged; each app retains 0.25 vCPU,
+0.5 GiB and 0 minimum / 1 maximum replica. No model credentials or paid public
+generation route were added. These approved cloud builds are billable ACR tasks;
+no additional Foundry inference was run during deployment or hosted verification.
+
+Hosted acceptance after rollout:
+
+- **44 Playwright checks passed**, 0 failed/skipped, desktop and mobile, 5.2 minutes.
+- **18 public endpoint/security/SSE checks passed**, 0 failed.
+- Both insight coaching endpoints serve stable `foundry_composition` envelopes,
+  the same validated audience facts, source references and six distinct saved
+  role receipts across the two moments.
+- Exact-origin CORS, security headers, all existing football modes, deterministic
+  simulation POST, timestamp scoping, invalid inputs and method rejection pass.
+- Replay restores its kickoff snapshot, then streams exactly 22 later match events
+  and two insights after their source events. The initial extra probe's incorrect
+  expectation of kickoff inside `after=0` was corrected to match this contract;
+  no application code or established test was weakened.
+- API console logs show both saved explanations materialized as Foundry
+  composition in the new ready API revision. Retained Log Analytics ingestion
+  remains outside the current deployment.
+
+Rollback references were captured before rollout and are preserved:
+
+- API: `rclgz67wzypxwhw.azurecr.io/reactcoach/api:d23a95ca8530-20261025125949`
+- Web: `rclgz67wzypxwhw.azurecr.io/reactcoach/web:73e314125be3-20261025134717`
+
+Use the existing explicit-subscription `az containerapp update --image` rollback
+procedure above if a verified regression appears. A rollback was not needed or
+executed during acceptance. Cloud receipts, logs and the bounded ad hoc smoke
+probe remain in ignored `.local/`; no credentials are included in this record.
+
+The GitHub connector opened its required PR confirmation form. No draft PR was
+created without **Submit**, so PR creation is still pending that interaction.
+Branch publication and Azure rollout are complete independently of the PR form.
+No merge, branch deletion, new infrastructure or platform submission occurred.
+
 ## Official sources
 
 - https://nextjs.org/docs/app/api-reference/config/next-config-js/output

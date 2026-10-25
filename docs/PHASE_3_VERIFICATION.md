@@ -1,6 +1,6 @@
 # Phase 3 — Foundry coaching verification
 
-Date: 2026-10-25. Status: **Done locally; deployment/publication Pending**. Branch:
+Date: 2026-10-25. Status: **Published branch and Azure rollout Done; draft PR awaiting connector confirmation**. Branch:
 `feat/phase-3-foundry-intelligence`. Baseline:
 `4fba1b457fae0724eae56e0a9bb8ac7b89062b5b` (`feat/azure-release-prep`).
 
@@ -17,7 +17,10 @@ Date: 2026-10-25. Status: **Done locally; deployment/publication Pending**. Bran
 | Local regression checks | Done: final artifact passes 104 all-feature Rust tests, 98 default Rust tests and 44 browser checks |
 | Independent architecture review | Blocked: Agy headless permission prompt; no independent approval |
 | Independent screenshot review | Blocked: helper usage limit; Codex inspected narrow and desktop screenshots; browser overflow checks passed |
-| Deployment/publication | Pending separate owner authorization; previous Azure release unchanged |
+| Deployment/publication | Done: owner authorized publishing and deployment; branch pushed and new API/web revisions ready. Draft PR creation awaits the GitHub connector's Submit confirmation |
+
+The local verification sections below preserve the initial acceptance record.
+The later publication section records the separately authorized Azure release.
 
 ## Verified local checks before real generation
 
@@ -129,6 +132,47 @@ A release-artifact regression test requires both explanations to resolve against
 the current full evidence and prompt/catalog policy, with six unique receipts.
 Stale source or wording changes cannot silently retain an outdated AI label.
 
+## Publication and hosted acceptance — 2026-10-25
+
+The owner separately authorized publishing and deploying this verified build.
+The branch was pushed at application commit
+`4080f3e866a3cdf8082ccfc201c8e69c896edc2e`. It contains the previously unpublished
+Phase 2B/UI/Azure packaging history as well as Phase 3: 18 commits ahead of main
+and none behind at publication. No merge or force push was performed.
+
+[GitHub Actions run 40201083100](https://github.com/devgupta-9/reactcoach-11/actions/runs/40201083100)
+passed for that exact commit. All three jobs passed: infrastructure guards/Bicep,
+Rust formatting/all-feature Clippy/locked tests, and Next.js lint/typecheck/build
+plus Playwright. Production npm audit reported **0 vulnerabilities**; the three
+local non-deploying guard checks also passed. Publication documentation is a
+separate follow-up commit; its CI status is checked after pushing it.
+
+Only the two existing Container Apps were redeployed. Existing resource group,
+registry, environment, pull identity, CPU/memory and 0–1 replica limits were
+retained. No new infrastructure, model credentials, paid inference or identity
+role changes were introduced. Immutable images, rollback references and full
+hosted results are recorded in [Azure deployment](AZURE_DEPLOYMENT.md).
+
+- Public web: https://reactcoach-demo-web.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io
+- Public API: https://reactcoach-demo-api.mangoglacier-0e0808c4.eastus2.azurecontainerapps.io
+- Hosted Playwright: **44 passed, 0 failed, 0 skipped**, desktop/mobile, 5.2 minutes.
+- Public endpoint/security/SSE smoke: **18 passed, 0 failed**.
+- Both actual public coaching endpoints return `foundry_composition`, stable
+  source-bound explanations, identical audience fact sets and six unique saved
+  role receipts across the two moments. Neither viewing nor testing invokes a model.
+- API startup logs confirm both explanations were materialized as Foundry
+  composition in the ready release revision.
+
+The extra SSE probe initially expected 23 streamed records from `after=0`.
+The documented stream strictly excludes records at or before that timestamp;
+the client loads the kickoff in its initial snapshot. The probe was corrected
+to assert one snapshot event plus exactly 22 unique later stream records and
+two correctly ordered insights. No deployed code or existing assertions changed.
+
+The GitHub connector displayed its required PR confirmation form. Draft PR
+creation remains awaiting **Submit**; it has not been reported as completed.
+The feature branch and Azure release are published, but main remains unchanged.
+
 ## Remaining acceptance and limitations
 
 The design uses **constrained AI narrative composition**: real model choices
@@ -141,9 +185,9 @@ is deterministic. Content fingerprints are not cryptographic provider signatures
 Saved explanations are explicitly precomputed and do not prove live provider
 availability. Missing/rejected artifacts produce a clearly labeled fallback.
 
-No new cloud resources, API identities, public model endpoint, database, queue,
-Foundry paid visitor calls, deployment or GitHub publication are introduced.
-The preceding public Azure deployment has not been changed or verified for Phase 3.
+The authorized release reuses the existing cloud resources and API identities.
+No public model endpoint, database, queue or paid visitor inference is introduced.
+Branch publication and hosted Phase 3 acceptance are recorded above; main is unmerged.
 The existing INR 300 alerts do not stop spending. Billing results must come from
 Azure cost reporting; token receipts are not a fabricated rupee charge.
 
