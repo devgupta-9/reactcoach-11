@@ -13,7 +13,8 @@ resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
   location: location
   properties: {
     appLogsConfiguration: {
-      destination: 'none'
+      // The ARM API uses null; "none" is only the Azure CLI spelling.
+      destination: null
     }
     workloadProfiles: [
       {

@@ -67,6 +67,9 @@ commands. It uses explicit subscription arguments and checks the tenant before
 writes. It registers required providers, validates Bicep, creates the environment
 and registry, builds the API then web image, and validates/deploys both apps.
 An ignored `.local/azure-deployment-*.json` receipt records image tags and URLs.
+ARM represents disabled log storage with `appLogsConfiguration.destination: null`;
+the CLI spelling `none` is not a valid literal ARM destination. This was verified
+by live template validation before hosting resources were created.
 
 `NEXT_PUBLIC_API_URL` is deliberately embedded during the web build, as required
 by Next.js public variables. Changing it requires rebuilding the web image; merely
@@ -143,6 +146,7 @@ ongoing costs after judging and obtain authorization before removing resources.
 - https://learn.microsoft.com/en-us/azure/templates/microsoft.app/2025-01-01/managedenvironments
 - https://learn.microsoft.com/en-us/azure/templates/microsoft.containerregistry/2025-11-01/registries
 - https://learn.microsoft.com/en-us/azure/container-apps/managed-identity-image-pull
+- https://learn.microsoft.com/en-us/azure/container-apps/log-options
 - https://learn.microsoft.com/en-us/azure/container-apps/billing
 - https://learn.microsoft.com/en-us/azure/container-apps/scale-app
 - https://prices.azure.com/api/retail/prices
