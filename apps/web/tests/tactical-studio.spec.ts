@@ -3,6 +3,57 @@ import type { InsightDetail, TacticalInsight } from "../app/match-contracts";
 
 const base = `${process.env.PLAYWRIGHT_API_URL ?? "http://localhost:8080"}/api/v1/matches/demo`;
 
+test("the ball remains unoccluded during possession and passing in both cameras", async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const studio = page.locator("#studio");
+  await expect(studio.locator(".trace-player")).toBeVisible();
+  // Hit testing exposes 3D occlusion that toBeVisible cannot detect. This
+  // temporary override changes no pixels; the production ball stays decorative.
+  await page.addStyleTag({ content: ".spatial-ball, .spatial-ball span { pointer-events: auto !important; }" });
+  const ball = studio.locator(".spatial-ball");
+  async function expectBallInFront() {
+    await studio.locator(".pitch-stage").scrollIntoViewIfNeeded();
+    await expect.poll(() => ball.evaluate(element => {
+      const box = element.getBoundingClientRect();
+      return [[0, 0], [-2, 0], [2, 0], [0, -2], [0, 2]].map(([dx, dy]) => {
+        const top = document.elementFromPoint(box.x + box.width / 2 + dx, box.y + box.height / 2 + dy);
+        return top !== null && (top === element || element.contains(top));
+      });
+    })).toEqual([true, true, true, true, true]);
+  }
+  for (const moment of [/The wide-channel turnover/, /A decision under pressure/]) {
+    await studio.getByRole("button", { name: moment }).click();
+    for (const branch of ["Original decision", "Corrected decision"]) {
+      await studio.getByRole("button", { name: branch, exact: true }).click();
+      for (const camera of ["angled", "overhead"]) {
+        if (await studio.locator(".pitch-stage").getAttribute("data-camera") !== camera) {
+          await studio.getByRole("button", { name: camera === "angled" ? "3D view" : "Overhead view", exact: true }).click();
+        }
+        await studio.getByRole("slider", { name: "Simulation time", exact: true }).press("Home");
+        await expectBallInFront();
+        if (camera === "angled") await expect.poll(() => studio.locator('[data-participant="assessed"] .player-shirt').evaluate(shirt => {
+          const label = document.createRange();
+          label.selectNodeContents(shirt);
+          const box = label.getBoundingClientRect();
+          const top = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+          return top !== null && (top === shirt || shirt.contains(top));
+        })).toBe(true);
+        await studio.locator(".pitch-stage").screenshot({ path: testInfo.outputPath(`ball-${moment.source}-${branch}-${camera}-initial.png`) });
+        await studio.getByRole("button", { name: /03 Adapt/ }).click();
+        await studio.getByRole("slider", { name: "Simulation time", exact: true }).press("ArrowRight");
+        await studio.getByRole("slider", { name: "Simulation time", exact: true }).press("ArrowRight");
+        await expect(ball).toHaveAttribute("data-owner", branch === "Corrected decision" ? "in_flight" : "assessed");
+        await expectBallInFront();
+        if (branch === "Corrected decision") await studio.locator(".pitch-stage").screenshot({ path: testInfo.outputPath(`ball-${moment.source}-${camera}-pass.png`) });
+        await studio.getByRole("slider", { name: "Simulation time", exact: true }).press("End");
+        await expect(ball).toHaveAttribute("data-owner", branch === "Corrected decision" ? "teammate" : "opponent");
+        await expectBallInFront();
+      }
+    }
+  }
+});
+
 test("both decision branches display the exact Rust states and identical starting coordinates", async ({ page, request }) => {
   const insights = await (await request.get(`${base}/insights`)).json() as TacticalInsight[];
   const detail = await (await request.get(`${base}/insights/${insights[0].insight_id}`)).json() as InsightDetail;
