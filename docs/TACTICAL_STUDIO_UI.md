@@ -82,3 +82,23 @@ buttons, an explicit response caption and outlined camera controls. This was a l
 independent visual critique, not an Agy bridge review or Foundry model call.
 The reviewer inspected the final desktop/mobile/lab renders and confirmed all
 four findings were resolved, with no remaining concrete visual defects reported.
+
+## Ball visibility correction — 2026-10-27
+
+Player billboard planes could cover the ball in the angled camera despite its
+DOM visibility and z-index. The ball marker now faces the camera and uses
+foreground presentation depth. The angled shirt's role letter sits higher so
+the visible ball does not cover it. Player positions and hit targets stay the
+same, and an explicit overhead offset preserves the accepted overhead appearance.
+
+These are CSS display conventions, not physical ball height or changes to Rust
+coordinates, ownership, timing or simulation results. Camera transitions and
+reduced-motion preferences remain supported. A browser regression checks five
+points on the ball across both fixtures, branches and cameras, including held,
+in-flight and final possession; it also checks the initial angled role marker.
+The foreground ball can briefly cross a shirt letter during a pass; participant
+labels and role controls remain available. Local lint, typecheck, production
+build and all 70 Playwright tests passed (0 failed), including zero horizontal
+overflow at 1440, 1024 and 390px. Independent source and screenshot reviews were
+performed. Publication and a new Azure rollout remain separate from this local
+verification.
